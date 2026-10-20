@@ -55,7 +55,7 @@ jobs:
           node-version: '24'
 
       - name: Run the conformance checker
-        run: npx --yes @automattic/vip-integration@0.1.2 validate
+        run: npx --yes @automattic/vip-integration@0.2.0 validate
 
   build:
     name: Build assets
