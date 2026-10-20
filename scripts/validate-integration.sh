@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-VERSION="0.1.2"
+VERSION="0.2.0"
 
 root="$(git rev-parse --show-toplevel)"
 dir="$(mktemp -d)"

@@ -26,7 +26,7 @@ npm test             # both
 npm run validate:integration
 ```
 
-This runs `@automattic/vip-integration` 0.1.2 against `git archive HEAD`, an export of what is committed, and exits 1 if any rule fails. It does not check the working tree, deliberately. The checker looks for `README.md` by exact name, and a case-insensitive filesystem would let `readme.md` pass here and fail on CI. It also reads every `.md` file under `docs/`, including local plans CI never sees. Commit before you run it.
+This runs `@automattic/vip-integration` 0.2.0 against `git archive HEAD`, an export of what is committed, and exits 1 if any rule fails. It does not check the working tree, deliberately. The checker looks for `README.md` by exact name, and a case-insensitive filesystem would let `readme.md` pass here and fail on CI. It also reads every `.md` file under `docs/`, including local plans CI never sees. Commit before you run it.
 
 CI runs the same checker as the `validate` job in `.github/workflows/ci.yml`. The checker is static. Two things stay with a human reviewer: whether the plugin's config matches the platform's schema, and the security review.
 
@@ -37,6 +37,8 @@ The checker's compatibility rule reads a literal PHP and WordPress matrix from t
 The platform defines one constant, a plain PHP array, before the plugin loads. All reads go through `StagedEdits\Config`.
 
 Config constant: `VIP_STAGED_EDITS_CONFIG`
+
+The manifest does not declare it. The platform derives it from the slug as `VIP_<SLUG>_CONFIG`, with the slug upper-cased and `-` turned into `_`, so renaming the slug renames the constant. `tests/test-manifest.php` fails if `StagedEdits\Config` reads a different name.
 
 Nothing is required. The plugin behaves exactly as it does without the Integration Center until a value is set, and no value can stop it loading.
 

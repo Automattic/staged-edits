@@ -80,12 +80,16 @@ class Test_Manifest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The manifest names the constant and the setting the plugin reads.
+	 * The slug derives the constant the plugin reads, and the manifest names its setting.
 	 */
 	public function test_runtime_config_matches_the_config_class(): void {
 		$manifest = $this->read( 'vip-manifest.yaml' );
 
-		$this->assertSame( Config::CONSTANT_NAME, $this->scalar( 'constant_name' ) );
+		$this->assertSame(
+			'VIP_' . strtoupper( str_replace( '-', '_', $this->scalar( 'slug' ) ) ) . '_CONFIG',
+			Config::CONSTANT_NAME,
+			'The platform derives the config constant from the slug.'
+		);
 
 		preg_match_all( '/^\s*-\s*key:\s*(\S+)\s*$/m', $manifest, $keys );
 
