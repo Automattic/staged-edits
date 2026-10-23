@@ -1,6 +1,6 @@
 <?php
 /**
- * Deliberate staging route tests for U3 (R37, R38).
+ * Deliberate staging route tests.
  *
  * @package StagedEdits
  */
@@ -81,7 +81,7 @@ class Test_Stage_Route extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE19. Unsaved work reaches the staged copy and the published post is untouched.
+	 * Unsaved work reaches the staged copy and the published post is untouched.
 	 */
 	public function test_staging_carries_unsaved_content_and_leaves_the_published_post_alone(): void {
 		$before = get_post( $this->live_id );
@@ -127,12 +127,12 @@ class Test_Stage_Route extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE22. A second request is refused, and creates no second copy.
+	 * A second request is refused, and creates no second copy.
 	 *
 	 * This route is the deliberate first save. Asking it to stage again over an
 	 * existing copy is the destructive case at the polite door: the request was
 	 * composed in an editor showing the published words, so honouring it would
-	 * replace the first pass rather than add to it (R55).
+	 * replace the first pass rather than add to it.
 	 */
 	public function test_staging_twice_is_refused(): void {
 		$first = $this->stage( $this->live_id, array( 'content' => 'First pass.' ) );

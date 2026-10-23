@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * A schedule is a deferred "Publish changes" by a named person (VIPPROD-1247).
+ * A schedule is a deferred "Publish changes" by a named person.
  *
  * Stored on the copy, fired by one cron event, run through the ordinary merge
  * with that person set as the acting user, and refused for every reason the
@@ -55,7 +55,7 @@ final class Scheduled_Publish {
 	/**
 	 * Meta on the staged copy naming who scheduled it.
 	 *
-	 * That person is set as the acting user when the schedule fires (KTD13):
+	 * That person is set as the acting user when the schedule fires:
 	 * the merge's own capability check then runs exactly as it does for a
 	 * click, against the published post, so a scheduler who has since lost
 	 * the capability is refused rather than merged as nobody.
@@ -424,7 +424,7 @@ final class Scheduled_Publish {
 				 * @param bool   $override Whether to proceed. Default: the config's answer for `$kind`, false when unset.
 				 * @param int    $copy_id  Staged copy post ID.
 				 * @param int    $live_id  Published post ID.
-				 * @param string $kind     `content`, `other`, or `unknown` (VIPPROD-752).
+				 * @param string $kind     `content`, `other`, or `unknown`.
 				 */
 				$overrides = (bool) apply_filters(
 					'staged_edits_scheduled_publish_overrides_drift',
@@ -482,7 +482,7 @@ final class Scheduled_Publish {
 	 *
 	 * The one place a sweep over staged copies is allowed, for the same
 	 * reason `CLI::inventory()` is: a deliberate operator action, not a
-	 * background query (R24). This is what `wp staged-edits run-due` calls, and what
+	 * background query. This is what `wp staged-edits run-due` calls, and what
 	 * a system cron line calls on a site running `DISABLE_WP_CRON`.
 	 *
 	 * @return array<int, array{outcome: string, reason: string, result: array<string, mixed>|WP_Error|null}> Outcomes, keyed by staged copy ID.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Authorization tests for U12 (R28).
+ * Authorization tests.
  *
  * @package StagedEdits
  */
@@ -83,7 +83,7 @@ class Test_Authorization extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE10. The staged copy's own author cannot read or edit it when they
+	 * The staged copy's own author cannot read or edit it when they
 	 * cannot edit the live post.
 	 */
 	public function test_staged_copy_author_who_cannot_edit_live_cannot_reach_the_staged_copy(): void {
@@ -98,7 +98,7 @@ class Test_Authorization extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE10. That user cannot reach the staged copy over REST either.
+	 * That user cannot reach the staged copy over REST either.
 	 */
 	public function test_staged_copy_author_cannot_read_the_staged_copy_over_rest(): void {
 		wp_set_current_user( $this->contributor_id );
@@ -157,7 +157,7 @@ class Test_Authorization extends WP_UnitTestCase {
 	/**
 	 * A stranded staged copy stays actionable by a sufficiently privileged user.
 	 *
-	 * Denying outright would make it permanent, which contradicts R17's promise
+	 * Denying outright would make it permanent, which contradicts the promise
 	 * that a stranded staged copy is surfaced for an editor to clear.
 	 */
 	public function test_stranded_staged_copy_remains_actionable_by_an_editor(): void {
@@ -229,7 +229,7 @@ class Test_Authorization extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE21. The documented filter forces staging for everyone.
+	 * The documented filter forces staging for everyone.
 	 */
 	public function test_filter_can_force_staging_for_everyone(): void {
 		$granted = get_user_by( 'id', $this->editor_id );
@@ -246,7 +246,7 @@ class Test_Authorization extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The filter grants as well as denies (R46).
+	 * The filter grants as well as denies.
 	 *
 	 * This is how a site keeps an integration publishing: answer for its own
 	 * account on the posts it writes, rather than granting the capability to a
@@ -354,10 +354,10 @@ class Test_Authorization extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE28. A grant is entry, never exemption: the copy still contains the write.
+	 * A grant is entry, never exemption: the copy still contains the write.
 	 *
 	 * The sync client's user was handed direct publishing on purpose, so its first
-	 * write to an unstaged post publishes. This post is already staged, and R41
+	 * write to an unstaged post publishes. This post is already staged, and the rule
 	 * admits no valve at all -- not the capability, not the grant that produced it.
 	 */
 	public function test_a_granted_user_is_still_contained_by_an_existing_copy(): void {

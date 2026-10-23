@@ -5,7 +5,7 @@
  * request is about the published post, and the control is about the editor.
  *
  * Both ways into staging come through here -- the Summary panel's button, and
- * the save the request middleware recognises and redirects (KTD34) -- so the
+ * the save the request middleware recognises and redirects -- so the
  * autosave lock belongs here too rather than at either call site.
  */
 
@@ -22,7 +22,7 @@ import { STAGED_FIELDS } from './edits';
 const LOCK = 'staged-edits/staging';
 
 /**
- * Takes or releases the autosave lock (KTD39).
+ * Takes or releases the autosave lock.
  *
  * An autosave fired mid-request writes to the published post through the
  * autosave endpoint, which staging deliberately does not contain, and it races

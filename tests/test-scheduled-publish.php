@@ -1,6 +1,6 @@
 <?php
 /**
- * Scheduled publish tests for VIPPROD-1247.
+ * Scheduled publish tests.
  *
  * @package StagedEdits
  */
@@ -131,7 +131,7 @@ class Test_Scheduled_Publish extends WP_UnitTestCase {
 	 * `content`-kind drift behind.
 	 *
 	 * A direct row write, not `wp_update_post()`: the write guard contains
-	 * every write to a post with a staged copy (R55), which this fixture
+	 * every write to a post with a staged copy, which this fixture
 	 * always has.
 	 *
 	 * @param string $content New content.
@@ -758,7 +758,7 @@ class Test_Scheduled_Publish extends WP_UnitTestCase {
 	 * row and its schedule meta both in place while the status itself is no
 	 * longer staged, which is the actual state this check exists to catch --
 	 * the ordinary route there is `trash`, which is the one status change
-	 * still reachable once VIPPROD-1246 closed every other one.
+	 * still reachable once every other one was closed.
 	 */
 	public function test_fire_refuses_a_copy_no_longer_staged(): void {
 		global $wpdb;
@@ -891,7 +891,7 @@ class Test_Scheduled_Publish extends WP_UnitTestCase {
 	}
 
 	// ---------------------------------------------------------------
-	// fire() -- drift, site config (VIPPROD-1352)
+	// fire() -- drift, site config
 	//
 	// A constant cannot be un-defined, so each case that defines one runs in
 	// its own process. The cases above never define it, which is what proves

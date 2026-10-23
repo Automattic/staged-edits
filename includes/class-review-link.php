@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Builds the URL that reviews a staged change (R23).
+ * Builds the URL that reviews a staged change.
  *
  * Shared rather than owned by whichever screen happens to link there. Two
  * screens offering "review this change" and landing on different comparisons
@@ -42,7 +42,7 @@ final class Review_Link {
 	 * before WordPress 7.0; below that the plugin still promises 6.8 (the
 	 * `Requires at least` header), so review falls back to core's classic
 	 * compare screen, `wp-admin/revision.php`, which has been there since
-	 * revisions themselves. Both are core's, unmodified (R23) -- this
+	 * revisions themselves. Both are core's, unmodified -- this
 	 * decides only which one a link opens.
 	 *
 	 * Filterable rather than hardcoded to the version check, for the one
@@ -305,8 +305,8 @@ final class Review_Link {
 	 * title and the excerpt as well as the content.
 	 *
 	 * The in-editor view diffs blocks; neither field is one, so a
-	 * title-only or excerpt-only change reads there as nothing changed
-	 * (VIPPROD-753, F2). This is the route around that, offered as
+	 * title-only or excerpt-only change reads there as nothing changed.
+	 * This is the route around that, offered as
 	 * "Compare as text" regardless of which screen `surface()` sends the
 	 * main review link to -- on the classic surface it is the same
 	 * destination as review itself.

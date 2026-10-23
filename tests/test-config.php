@@ -1,6 +1,6 @@
 <?php
 /**
- * Runtime config tests (VIPPROD-1352).
+ * Runtime config tests.
  *
  * @package StagedEdits
  */

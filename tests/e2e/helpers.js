@@ -316,7 +316,7 @@ function reviewControl( page ) {
 
 /**
  * Which of core's two revision screens reviews a staged change here --
- * `'editor'` on WordPress 7.0+, `'classic'` below it (VIPPROD-753).
+ * `'editor'` on WordPress 7.0+, `'classic'` below it.
  *
  * Read from the page the editor already shipped rather than asked of the
  * server directly, so a test branching on it sees the exact answer the
@@ -574,7 +574,7 @@ function runDueSchedules() {
 
 /**
  * A custom, REST-exposed taxonomy, registered as a must-use plugin so it
- * exists before the browser ever loads the editor (VIPPROD-1228).
+ * exists before the browser ever loads the editor.
  *
  * Proves `lockedTaxonomies` comes from the server's own enumeration
  * (`Field_Lock::locked_taxonomies()`) rather than a list of core's two

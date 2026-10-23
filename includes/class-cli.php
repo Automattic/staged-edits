@@ -71,7 +71,7 @@ final class CLI {
 			'staged-edits schedule',
 			array( __CLASS__, 'command_schedule' ),
 			array(
-				'shortdesc' => 'Schedules a staged copy to publish at a set time (VIPPROD-1247).',
+				'shortdesc' => 'Schedules a staged copy to publish at a set time.',
 			)
 		);
 
@@ -79,7 +79,7 @@ final class CLI {
 			'staged-edits unschedule',
 			array( __CLASS__, 'command_unschedule' ),
 			array(
-				'shortdesc' => "Cancels a staged copy's scheduled publish (VIPPROD-1247).",
+				'shortdesc' => "Cancels a staged copy's scheduled publish.",
 			)
 		);
 
@@ -87,7 +87,7 @@ final class CLI {
 			'staged-edits publish',
 			array( __CLASS__, 'command_publish' ),
 			array(
-				'shortdesc' => 'Publishes a staged copy immediately, from the command line (VIPPROD-1247).',
+				'shortdesc' => 'Publishes a staged copy immediately, from the command line.',
 			)
 		);
 
@@ -95,7 +95,7 @@ final class CLI {
 			'staged-edits run-due',
 			array( __CLASS__, 'command_run_due' ),
 			array(
-				'shortdesc' => 'Fires every scheduled publish that is due now (VIPPROD-1247).',
+				'shortdesc' => 'Fires every scheduled publish that is due now.',
 			)
 		);
 	}
@@ -264,7 +264,7 @@ final class CLI {
 	 * Runs as WP-CLI's own `--user` global, the same flag every WP-CLI
 	 * command already reads: `wp staged-edits schedule 123 --at="+2 minutes"
 	 * --user=admin`. That person becomes the acting user when the schedule
-	 * fires (VIPPROD-1247), exactly as scheduling from the editor would make
+	 * fires, exactly as scheduling from the editor would make
 	 * the person clicking the acting user.
 	 *
 	 * ## OPTIONS
@@ -400,7 +400,7 @@ final class CLI {
 	 * `wp staged-edits run-due`
 	 *
 	 * Fires every schedule whose time has come, the way a system cron line
-	 * would on a site running `DISABLE_WP_CRON` (VIPPROD-1247). Also the
+	 * would on a site running `DISABLE_WP_CRON`. Also the
 	 * right thing to run by hand after an incident, to catch anything
 	 * WP-Cron itself dropped.
 	 *
@@ -449,7 +449,7 @@ final class CLI {
 	/**
 	 * Every staged post, paged.
 	 *
-	 * Public so `Scheduled_Publish::run_due()` (VIPPROD-1247) can iterate the
+	 * Public so `Scheduled_Publish::run_due()` can iterate the
 	 * same set `inventory()` does rather than running a second query with its
 	 * own idea of "every staged copy" to keep in step with this one.
 	 *

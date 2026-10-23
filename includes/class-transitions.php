@@ -139,7 +139,7 @@ final class Transitions {
 		/*
 		 * The forward pointer dies with the post it lives on. The reverse
 		 * pointer is deliberately kept: it is the only remaining record of what
-		 * this staged copy belonged to, and U14's repair needs it. It resolves
+		 * this staged copy belonged to, and `wp staged-edits repair` needs it. It resolves
 		 * to nothing, which every caller already handles.
 		 */
 	}
@@ -149,7 +149,7 @@ final class Transitions {
 	 *
 	 * The editor still shows core's "Move to trash" button on a staged copy, and it
 	 * is a reasonable thing for someone to press when abandoning an edit. Left
-	 * alone it produces the one outcome R14 rules out: a staged copy sitting in
+	 * alone it produces the one outcome discarding must never produce: a staged copy sitting in
 	 * the trash holding unreviewed content, still discoverable, while the live
 	 * post keeps a pointer to something that is no longer a valid staged copy.
 	 *
@@ -216,7 +216,7 @@ final class Transitions {
 
 	/**
 	 * Puts a staged copy back when something took it out of the staged status
-	 * without going through `wp_insert_post()` (VIPPROD-1246).
+	 * without going through `wp_insert_post()`.
 	 *
 	 * `Write_Guard` refuses this at `wp_insert_post_empty_content`, which covers
 	 * every write that routes through `wp_insert_post()` -- the block editor,

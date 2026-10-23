@@ -1,6 +1,6 @@
 <?php
 /**
- * Classic editor meta box removal tests for VIPPROD-1228.
+ * Classic editor meta box removal tests.
  *
  * @package StagedEdits
  */

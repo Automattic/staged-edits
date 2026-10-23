@@ -1,6 +1,6 @@
 /**
- * A locked `meta` key is stripped and warned about, not refused wholesale
- * (VIPPROD-755), through the real editor rather than a crafted REST request.
+ * A locked `meta` key is stripped and warned about, not refused wholesale,
+ * through the real editor rather than a crafted REST request.
  *
  * Installs a trivial sidebar plugin -- the shape a real SEO plugin's own
  * panel takes: a `PluginSidebar` bound to one `meta` key through
@@ -9,7 +9,7 @@
  * the canvas of a staged copy in the same session and saves once, the way an
  * editor actually would: one save, both fields dirty.
  *
- * Before VIPPROD-755's fix to `class-field-lock.php`, run against `main` @
+ * Before the fix to `class-field-lock.php`, run against `main` @
  * cc7c417: the save below failed with a 403 (`staged_edits_field_locked` naming
  * `meta`), core's "Updating failed" notice appeared on screen, the editor
  * still reported the post dirty, and the canvas edit was lost along with the
@@ -190,12 +190,12 @@ test.describe( 'A sidebar plugin writing meta alongside a staged copy save', () 
 	} );
 
 	/**
-	 * Regression pin for VIPPROD-755 (fixed in `class-field-lock.php`): the
+	 * Regression pin for the meta-lock fix in `class-field-lock.php`: the
 	 * save succeeds, the canvas edit persists, and the sidebar's meta key
 	 * was silently dropped -- server-side only, so the editor itself still
 	 * reports the save as clean. That the SEO field did not actually
 	 * persist is visible in `X-Staged-Edits-Meta-Dropped` and
-	 * `staged_edits_meta_keys_dropped`, not in this screen; VIPPROD-755 T4 is what
+	 * `staged_edits_meta_keys_dropped`, not in this screen; meta staging is what
 	 * gives the editor its own awareness of a staged-meta set.
 	 *
 	 * Before the fix, run against `main` @ cc7c417: this test failed with a

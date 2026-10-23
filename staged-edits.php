@@ -3,7 +3,7 @@
  * Plugin Name:       Staged Edits
  * Plugin URI:        https://github.com/Automattic/staged-edits
  * Description:       Edit a published post as a private staged copy. The live post keeps serving until you publish the change.
- * Version:           0.3.0-alpha.1
+ * Version:           0.3.0-alpha.2
  * Requires at least: 6.8
  * Requires PHP:      8.2
  * Author:            Automattic
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const VERSION = '0.3.0-alpha.1';
+const VERSION = '0.3.0-alpha.2';
 
 const PLUGIN_FILE = __FILE__;
 
@@ -38,7 +38,7 @@ require_once __DIR__ . '/includes/class-events.php';
 /**
  * Whether staging is enabled for this request.
  *
- * The kill switch from R32. Filterable so an operator can disable staging during
+ * The kill switch. Filterable so an operator can disable staging during
  * an incident without deactivating the plugin, which would unregister the staged
  * post status and stop containing existing staged copies.
  *

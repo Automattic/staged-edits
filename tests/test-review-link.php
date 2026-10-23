@@ -1,6 +1,6 @@
 <?php
 /**
- * Review surface tests (R23).
+ * Review surface tests.
  *
  * @package StagedEdits
  */
@@ -122,7 +122,7 @@ class Test_Review_Link extends WP_UnitTestCase {
 	 *
 	 * Forced onto the editor surface: this is what that surface names, on
 	 * whichever WordPress version the suite happens to run against
-	 * (VIPPROD-753's own default is version-dependent below WordPress 7.0).
+	 * (the classic review's own default is version-dependent below WordPress 7.0).
 	 */
 	public function test_the_review_link_opens_the_editor_revisions_view(): void {
 		add_filter( 'staged_edits_review_surface', fn () => 'editor' );
@@ -314,7 +314,7 @@ class Test_Review_Link extends WP_UnitTestCase {
 	 * The published post half uses a post of its own rather than
 	 * `$this->live_id`: that one already has a staged copy from `set_up()`,
 	 * and the write guard neutralizes a direct content write to a post in
-	 * that state (R55), leaving nothing here for a revision to record.
+	 * that state, leaving nothing here for a revision to record.
 	 */
 	public function test_restore_is_withheld_on_a_staged_copy_and_kept_on_a_published_post(): void {
 		$staged_copy_revisions = wp_get_post_revisions( $this->staged_copy_id, array( 'order' => 'ASC' ) );
@@ -338,7 +338,7 @@ class Test_Review_Link extends WP_UnitTestCase {
 
 		// Plainly called, `wp_update_post()` is an unidentified write, which
 		// this plugin forks into a staged copy rather than writing the post
-		// directly (KTD30b) -- correctly, and not what this test is about.
+		// directly -- correctly, and not what this test is about.
 		// The filter is the direct-publish grant's own escape hatch for
 		// exactly this: answering per write rather than fighting a role's
 		// capabilities.

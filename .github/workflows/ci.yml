@@ -122,7 +122,7 @@ jobs:
       # A runner is a fresh container on every run, so there is never an
       # existing database to leave behind on a version switch -- unlike a
       # local wp-env, which needs `wp core update-db` after one (learned
-      # writing D1: a downgraded core otherwise shows "Database Update
+      # the hard way: a downgraded core otherwise shows "Database Update
       # Required" until it runs).
       # `core: null` would mean "the latest release", but wp-env resolves that
       # by asking wordpress.org for the version and then fetching that tag from
@@ -166,7 +166,7 @@ jobs:
   # Trunk and 6.8 on a schedule only, on the lowest PHP the plugin supports.
   # Trunk so a core change that will break the plugin shows up before it ships;
   # 6.8 because it is the oldest version `Requires at least` promises and the
-  # classic review surface's own floor (VIPPROD-753, D1). Everything else runs
+  # classic review surface's own floor. Everything else runs
   # in `tests` above on every push and pull request.
   tests-weekly:
     name: PHPUnit (WP ${{ matrix.core }}, scheduled)

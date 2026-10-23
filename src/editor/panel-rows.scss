@@ -54,7 +54,7 @@
 .components-panel__row.staged-edits-published-row {
 	order: -1;
 
-	// Its help line (VIPPROD-1228) wraps onto a line of its own; see below.
+	// Its help line wraps onto a line of its own; see below.
 	flex-wrap: wrap;
 }
 
@@ -75,7 +75,7 @@
 }
 
 /**
- * The Published post row's help line (VIPPROD-1228).
+ * The Published post row's help line.
  *
  * `PluginPostStatusInfo` wraps every fill's children in one `PanelRow`,
  * which lays its children out as a single flex row -- the label-and-control
@@ -98,7 +98,7 @@
  * Core's Status row, superseded by ours.
  *
  * Scoped to the fill's presence, and that scoping is load-bearing rather than
- * tidy (R53). This stylesheet is enqueued independently of the script, so on a
+ * tidy. This stylesheet is enqueued independently of the script, so on a
  * page load where the bundle failed the rule below matches nothing and core's
  * own row stays exactly where it was. An unscoped hide would delete it on the
  * one page load where it is the only thing left.
@@ -120,8 +120,7 @@
 }
 
 /**
- * The Summary rows for fields that cannot be staged, on a staged copy
- * (VIPPROD-1228).
+ * The Summary rows for fields that cannot be staged, on a staged copy.
  *
  * Same scoping as the two rules above, and the same reason: this sheet loads
  * whether or not the bundle did, so an unscoped hide would delete a real,

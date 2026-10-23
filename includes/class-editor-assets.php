@@ -136,8 +136,8 @@ final class Editor_Assets {
 
 			/*
 			 * "Compare as text" is a route around the in-editor view diffing
-			 * blocks, which cannot show a title or excerpt change at all
-			 * (VIPPROD-753, F2). `changedFields` decides whether it is worth
+			 * blocks, which cannot show a title or excerpt change at all.
+			 * `changedFields` decides whether it is worth
 			 * offering; `compareTextUrl` is where it goes either way.
 			 */
 			$context['compareTextUrl'] = Review_Link::compare_as_text_url( $post->ID );
@@ -180,7 +180,7 @@ final class Editor_Assets {
 
 			/*
 			 * Drift state is resolved server-side and shipped with the page.
-			 * `driftKind` (VIPPROD-752) is what the load-time notice reads to
+			 * `driftKind` is what the load-time notice reads to
 			 * say what actually changed; `historyUrl` is withheld for
 			 * `'other'` the same way the merge's own refusal withholds it --
 			 * a change to anything but title, content, or excerpt diffs to
@@ -195,7 +195,7 @@ final class Editor_Assets {
 				: '';
 
 			/*
-			 * Scheduling, read for the copy being edited (VIPPROD-1248). Both
+			 * Scheduling, read for the copy being edited. Both
 			 * a schedule and a refusal are shipped in the shape the row and
 			 * the notices need directly, rather than the raw meta: the row
 			 * needs an unambiguous instant for the date picker (`scheduledFor`,
@@ -226,7 +226,7 @@ final class Editor_Assets {
 			) : null;
 
 			/*
-			 * Every taxonomy the write guard locks on this copy (VIPPROD-1228),
+			 * Every taxonomy the write guard locks on this copy,
 			 * so the editor can take each one's panel off the screen the same
 			 * way it takes core's two off -- a site's or plugin's own taxonomy
 			 * included, without hard-coding `category`/`post_tag` here and
@@ -294,7 +294,7 @@ final class Editor_Assets {
 
 			/*
 			 * The published post's own notice names when the copy will
-			 * publish itself (VIPPROD-1248), but nothing else about the
+			 * publish itself, but nothing else about the
 			 * schedule: who scheduled it and why a run was refused are the
 			 * staged copy's own business, read on that screen instead.
 			 */
@@ -308,7 +308,7 @@ final class Editor_Assets {
 	}
 
 	/**
-	 * A GMT datetime, formatted for the site to read (VIPPROD-1248).
+	 * A GMT datetime, formatted for the site to read.
 	 *
 	 * `wp_date()` rather than `date_i18n()`: it is the one of the two that
 	 * takes a timezone argument and resolves the site's, which is what core's
@@ -337,7 +337,7 @@ final class Editor_Assets {
 
 	/**
 	 * A GMT datetime, as an ISO 8601 string a JS date library parses
-	 * correctly (VIPPROD-1248).
+	 * correctly.
 	 *
 	 * The stored value is a bare MySQL datetime with no timezone marker.
 	 * `moment()`, which the block editor's own date picker is built on,

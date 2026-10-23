@@ -1,6 +1,5 @@
 /**
- * The controls for fields that cannot be staged, taken off the screen
- * (VIPPROD-1228).
+ * The controls for fields that cannot be staged, taken off the screen.
  *
  * `test-field-lock.php` and `test-admin-surfaces.php` already prove the
  * server refuses these fields and removes the classic editor's boxes for

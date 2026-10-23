@@ -1,6 +1,6 @@
 <?php
 /**
- * Schedule route tests for VIPPROD-1247.
+ * Schedule route tests.
  *
  * @package StagedEdits
  */

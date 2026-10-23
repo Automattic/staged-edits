@@ -21,11 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Every branch here answers the same question: is it safe to act, or should
  * this only be surfaced to a human? The bias is fixed and one-directional --
  * no path in this class deletes staged work. Deletion belongs to the merge,
- * after the work has provably reached the live post, and to U14's CLI, which
+ * after the work has provably reached the live post, and to the repair command, which
  * a person runs deliberately.
  *
  * Resume decides *where* to re-enter. It does not decide whether a step needs
- * doing: each merge step is idempotent (KTD19), so re-entering a step that
+ * doing: each merge step is idempotent, so re-entering a step that
  * already completed is a no-op rather than a double-apply. That is what makes
  * an interrupted merge safe to re-run at all.
  */
@@ -76,7 +76,7 @@ final class Merge_Resume {
 	 *
 	 * The edit screen is the entry point because it is the one moment we know a
 	 * human is waiting on this post and can be shown the result. A cron entry
-	 * point would repair posts nobody was asking for, and R24 rules out the
+	 * point would repair posts nobody was asking for, and the design rules out the
 	 * query that would find them.
 	 *
 	 * @return void
@@ -114,7 +114,7 @@ final class Merge_Resume {
 	/**
 	 * Whether the current user may drive recovery for a post.
 	 *
-	 * Resolved against the live post, as everywhere else (KTD13): a staged copy
+	 * Resolved against the live post, as everywhere else: a staged copy
 	 * is only ever as private as the article it stages.
 	 *
 	 * @param int $post_id Either post of a staged pair.
@@ -250,7 +250,7 @@ final class Merge_Resume {
 			/*
 			 * The marker names something that is not this post's staged copy. It
 			 * drives force-deletion and reparenting, so acting on it could
-			 * destroy an unrelated post. Surfaced, never acted on (KTD14).
+			 * destroy an unrelated post. Surfaced, never acted on.
 			 */
 			return self::decision( self::ACTION_SURFACE, 'invalid_marker', $context );
 		}

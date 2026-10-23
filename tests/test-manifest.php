@@ -1,6 +1,6 @@
 <?php
 /**
- * Handoff manifest consistency tests (VIPPROD-1352).
+ * Handoff manifest consistency tests.
  *
  * The manifest is what VIP registers the integration from, so a value that
  * drifts from the plugin is a wrong promise to the platform. The line parsing

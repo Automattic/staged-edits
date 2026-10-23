@@ -19,12 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Owns the relationship between a live post and its staged copy.
  *
- * Lookups are primary-key meta reads, never queries (KTD3). Two reasons: a
+ * Lookups are primary-key meta reads, never queries. Two reasons: a
  * meta_query would be a slow query under VIP standards, and where VIP Search
  * offloads WP_Query to Elasticsearch an internal status is not indexed at all,
  * so a query-based lookup would silently find nothing.
  *
- * No pointer is ever trusted (KTD14). A stale or copied pointer would otherwise
+ * No pointer is ever trusted. A stale or copied pointer would otherwise
  * redirect a write or a delete onto an unrelated published post, so every
  * resolved target is revalidated and a pointer that fails is deleted.
  */
@@ -52,7 +52,7 @@ final class Staged_Copy_Repository {
 
 	/**
 	 * Meta on the staged copy recording a fingerprint of the live post's
-	 * staged fields at fork (VIPPROD-752).
+	 * staged fields at fork.
 	 *
 	 * The timestamp alone cannot tell a content change from any other write
 	 * that touches the live post, and cannot see a content change made by a
@@ -64,7 +64,7 @@ final class Staged_Copy_Repository {
 	public const FORK_FINGERPRINT_META = '_staged_edits_forked_fingerprint';
 
 	/**
-	 * Fields an editor may change on a staged copy (R29, KD9).
+	 * Fields an editor may change on a staged copy.
 	 *
 	 * Everything else is copied at fork for fidelity and locked, so nothing can
 	 * be staged that core's revision screen cannot show and the pre-merge
@@ -73,7 +73,7 @@ final class Staged_Copy_Repository {
 	public const STAGED_FIELDS = array( 'post_title', 'post_content', 'post_excerpt' );
 
 	/**
-	 * Builds the deterministic slug for a live post's staged copy (KTD8).
+	 * Builds the deterministic slug for a live post's staged copy.
 	 *
 	 * Embeds the live post ID, so it is unique by construction and can never
 	 * equal the live post's own slug. The slug matters because a staged copy sharing
@@ -137,7 +137,7 @@ final class Staged_Copy_Repository {
 	/**
 	 * Whether a live/staged copy pair is genuinely linked.
 	 *
-	 * The full validation set from KTD14: the target exists, carries the staged
+	 * The full validation set: the target exists, carries the staged
 	 * status, matches the live post's type, and its reverse pointer agrees.
 	 *
 	 * @param int $live_id   Live post ID.
@@ -298,7 +298,7 @@ final class Staged_Copy_Repository {
 	}
 
 	/**
-	 * Removes the staging user's autosave on the published post (KTD21).
+	 * Removes the staging user's autosave on the published post.
 	 *
 	 * Core autosaves a published post while it is being edited, writing an
 	 * autosave revision on the published post whose content is unreviewed staged
@@ -408,7 +408,7 @@ final class Staged_Copy_Repository {
 
 	/**
 	 * Copies the fields an editor cannot stage, so the staged copy reads as a
-	 * faithful copy of the live post (KTD18).
+	 * faithful copy of the live post.
 	 *
 	 * @param WP_Post $live      The live post.
 	 * @param int     $staged_copy_id The staged copy's ID.
@@ -444,7 +444,7 @@ final class Staged_Copy_Repository {
 	 * @return void
 	 */
 	/**
-	 * The refusal every seam gives a write to a post that already has a copy (R55).
+	 * The refusal every seam gives a write to a post that already has a copy.
 	 *
 	 * ## The `staged_edits_live_locked` error code is public contract
 	 *

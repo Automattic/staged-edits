@@ -1,6 +1,6 @@
 <?php
 /**
- * Event surface tests for U11 (R27, R35).
+ * Event surface tests.
  *
  * @package StagedEdits
  */
@@ -311,7 +311,7 @@ class Test_Events extends WP_UnitTestCase {
 	/**
 	 * A staged write is distinguishable from inside core's own save hook.
 	 *
-	 * This is the whole point of R35: one line, in the hook an integration
+	 * This is the whole point of the predicate: one line, in the hook an integration
 	 * already uses.
 	 */
 	public function test_an_integration_can_exclude_staged_writes_in_one_line(): void {

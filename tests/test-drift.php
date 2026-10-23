@@ -1,6 +1,6 @@
 <?php
 /**
- * Drift tests for U6 (R12, R13).
+ * Drift tests.
  *
  * @package StagedEdits
  */
@@ -55,10 +55,10 @@ class Test_Drift extends WP_UnitTestCase {
 	 * Moves the live post and returns its new GMT modified time.
 	 *
 	 * A direct row write, not `wp_update_post()`: the write guard contains
-	 * every write to a post that already has a staged copy (R55), which
+	 * every write to a post that already has a staged copy, which
 	 * this fixture's `set_up()` always leaves it with, and that containment
 	 * is unconditional Tier 1 -- no capability or channel changes it. Before
-	 * the fingerprint existed (VIPPROD-752) that made no difference here,
+	 * the fingerprint existed that made no difference here,
 	 * since `wp_update_post()` being silently blocked and `$content` never
 	 * landing was invisible to a timestamp-only comparison; now it would
 	 * make every "content changed" test below false by construction. The
@@ -75,7 +75,7 @@ class Test_Drift extends WP_UnitTestCase {
 	private function move_live( string $content, string $when = '2026-08-13 09:00:00' ): string {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No core API can set this field; core overwrites it on every update. The content is written here too, for the same reason (R55 blocks wp_update_post unconditionally once a copy exists).
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- No core API can set this field; core overwrites it on every update. The content is written here too, for the same reason (the plugin blocks wp_update_post unconditionally once a copy exists).
 		$wpdb->update(
 			$wpdb->posts,
 			array(
@@ -93,7 +93,7 @@ class Test_Drift extends WP_UnitTestCase {
 
 	/**
 	 * Changes the live post's content directly, leaving its timestamp
-	 * exactly as it was (VIPPROD-752, F1).
+	 * exactly as it was.
 	 *
 	 * A direct row write, deliberately: this is what a database restore or
 	 * a migration tool does, and it is the one case a timestamp comparison
@@ -148,7 +148,7 @@ class Test_Drift extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE3. A live change after the fork refuses the merge.
+	 * A live change after the fork refuses the merge.
 	 */
 	public function test_a_live_change_refuses_the_merge(): void {
 		$this->move_live( 'Launches in July.' );
@@ -163,7 +163,7 @@ class Test_Drift extends WP_UnitTestCase {
 
 	/**
 	 * A content change that reaches the row without moving the timestamp
-	 * is still caught (VIPPROD-752, F1) -- the one case the timestamp
+	 * is still caught -- the one case the timestamp
 	 * alone could never see, and the reason the fingerprint exists.
 	 */
 	public function test_content_changed_behind_a_preserved_timestamp_is_drift(): void {
@@ -180,7 +180,7 @@ class Test_Drift extends WP_UnitTestCase {
 
 	/**
 	 * A change to something other than title, content, or excerpt is a
-	 * different kind of drift (VIPPROD-752, F2): the merge never writes
+	 * different kind of drift: the merge never writes
 	 * those fields, so nothing here is something publishing could
 	 * overwrite. It still refuses -- the published post did change -- but
 	 * says so honestly, and offers no history link to a diff that would
@@ -205,7 +205,7 @@ class Test_Drift extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE3. A token naming the exact state shown allows the merge.
+	 * A token naming the exact state shown allows the merge.
 	 */
 	public function test_an_override_naming_the_shown_state_is_accepted(): void {
 		$this->move_live( 'Launches in July.' );
@@ -216,7 +216,7 @@ class Test_Drift extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The token binds content as well as time (VIPPROD-752): a token
+	 * The token binds content as well as time: a token
 	 * captured before a content change that preserved the timestamp no
 	 * longer matches once that change lands, so it cannot be replayed to
 	 * override a content drift the timestamp alone did not register.
@@ -241,7 +241,7 @@ class Test_Drift extends WP_UnitTestCase {
 	 * A token that does not name the live post's current state is refused,
 	 * whatever it claims to be.
 	 *
-	 * This is the whole reason the comparison is equality (KTD15): under an
+	 * This is the whole reason the comparison is equality: under an
 	 * ordering test on a timestamp a client could send a value far in the
 	 * future and pass the check on every request, forever. The state token
 	 * this replaces that with has no order to game, so what is left to pin
@@ -292,7 +292,7 @@ class Test_Drift extends WP_UnitTestCase {
 	 * Override values that must never reach a comparison.
 	 *
 	 * A `post_modified_gmt`-shaped timestamp is deliberately included: that
-	 * was the override's whole shape before VIPPROD-752, and it must not be
+	 * was the override's whole shape before content fingerprints, and it must not be
 	 * silently accepted as half of the new token.
 	 *
 	 * @return array<string, array{string}> Test cases.
@@ -339,8 +339,8 @@ class Test_Drift extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A touch with no content change is `other` drift, not `content`
-	 * (VIPPROD-752): the fingerprint is unchanged, so the timestamp moving
+	 * A touch with no content change is `other` drift, not `content`:
+	 * the fingerprint is unchanged, so the timestamp moving
 	 * on its own is the one case this plugin was already careful never to
 	 * mistake for something a merge could overwrite.
 	 */
@@ -425,12 +425,12 @@ class Test_Drift extends WP_UnitTestCase {
 	/**
 	 * The check re-reads the live post rather than trusting a cached copy.
 	 *
-	 * R21 leaves the window between an editor's drift check and their merge open
+	 * The design leaves the window between an editor's drift check and their merge open
 	 * by design, since an ungated writer can touch the live post at any moment.
 	 * This simulates that: the post is loaded into cache, then changed behind
 	 * the request's back.
 	 *
-	 * Also covers VIPPROD-752, F4: a direct SQL write that moves the
+	 * Also covers a direct SQL write that moves the
 	 * timestamp is caught, and correctly read as `content` drift, since
 	 * this write changes content too.
 	 */
@@ -465,13 +465,13 @@ class Test_Drift extends WP_UnitTestCase {
 
 	/**
 	 * The refused-merge history link opens whichever screen reviews a staged
-	 * change (VIPPROD-753) -- the same choice `Review_Link::for_staged_copy()`
+	 * change -- the same choice `Review_Link::for_staged_copy()`
 	 * makes, since both are answering "how does someone here look at a
 	 * change".
 	 *
 	 * A post of its own, edited before any copy is staged against it, rather
 	 * than the fixture's `live_id`: once a copy exists the write guard
-	 * neutralizes a direct content write to the post it stages (R55), which
+	 * neutralizes a direct content write to the post it stages, which
 	 * would leave nothing here for a revision to record.
 	 */
 	public function test_history_url_follows_the_surface(): void {
@@ -484,7 +484,7 @@ class Test_Drift extends WP_UnitTestCase {
 
 		/*
 		 * `wp_update_post()` from here is not the "cli" channel `classify()`
-		 * carves out for WP-CLI's own process (KTD30b); called plainly, it is
+		 * carves out for WP-CLI's own process; called plainly, it is
 		 * an unidentified write, and this plugin forks one into a staged
 		 * copy rather than writing the post directly -- correctly, and not
 		 * what this test is about. The filter is the direct-publish grant's

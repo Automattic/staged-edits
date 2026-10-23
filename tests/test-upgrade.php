@@ -184,7 +184,7 @@ class Test_Upgrade extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A copy staged before the fork fingerprint existed (VIPPROD-752) is
+	 * A copy staged before the fork fingerprint existed is
 	 * backfilled from the live row while nothing has touched it since the
 	 * fork -- the one place the bytes the fingerprint means still exist,
 	 * and the one case the recorded timestamp can vouch for.

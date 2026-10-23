@@ -1,8 +1,8 @@
 /**
- * The staged copy's own control for publishing at a set time (VIPPROD-1248).
+ * The staged copy's own control for publishing at a set time.
  *
- * Everything the control calls already exists and is proven server-side
- * (VIPPROD-1247): the route, the merge, every refusal. What this file proves
+ * Everything the control calls already exists and is proven server-side:
+ * the route, the merge, every refusal. What this file proves
  * is the one thing a unit suite cannot: that the picker an editor actually
  * touches sends the time they actually chose, and that what the row and the
  * notices say afterwards is what the server actually holds -- not just what
@@ -324,7 +324,7 @@ test.describe( 'Publishing a staged copy at a set time', () => {
 			)
 		).toBeVisible();
 
-		// The sentence two other suites locate this notice by (VIPPROD-1230),
+		// The sentence two other suites locate this notice by,
 		// still present and still exact.
 		await expect(
 			notice( page, 'locked here until those changes' )

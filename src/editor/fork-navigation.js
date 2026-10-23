@@ -3,7 +3,7 @@
  *
  * There are two layers here, and the order matters.
  *
- * The first is the protocol (R49, KTD34). Before a save leaves the editor, this
+ * The first is the protocol. Before a save leaves the editor, this
  * middleware asks whether it is going to stage, and if it is, sends it to the
  * staging route instead of the post endpoint. That route answers 200 with the
  * staged copy's ID, so a staged save is a success to everything that watches
@@ -156,7 +156,7 @@ function savedPostId( options ) {
 }
 
 /**
- * Whether this save is one the staging route should carry (KTD34).
+ * Whether this save is one the staging route should carry.
  *
  * The staged-field half is load-bearing: without it, a save that only moved the
  * post into a category would be sent to the staging route, which cannot hold a
@@ -186,7 +186,7 @@ function shouldStage( ctx, id, fields ) {
 }
 
 /**
- * Whether this save would write fields the staged copy already owns (R55).
+ * Whether this save would write fields the staged copy already owns.
  *
  * The client half of `staged_edits_live_locked`. The canvas and the title are
  * read-only while a copy exists, and the excerpt field is gone from the
@@ -301,7 +301,7 @@ function arrivalUrl( editUrl ) {
 }
 
 /**
- * Puts each refused field back to its saved value (VIPPROD-1228).
+ * Puts each refused field back to its saved value.
  *
  * `getCurrentPost()` is the post in its last known *saved* state, not
  * including whatever is locally edited -- unlike `getEditedPostAttribute()`,
@@ -349,7 +349,7 @@ function undoRefused( refused ) {
 }
 
 /**
- * Refuses a save carrying changes a staged copy cannot hold (R51).
+ * Refuses a save carrying changes a staged copy cannot hold.
  *
  * The client twin of the staging route's own refusal, and it has to be a
  * different sentence: the route tells the reader to change the field on the

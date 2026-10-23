@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Core's posts list already has the two extension points this needs: the post
  * state label beside the title and the row actions beneath it. Using them means
- * staged work is visible without a screen of its own (R23), and an editor finds
+ * staged work is visible without a screen of its own, and an editor finds
  * it while doing something else rather than by going looking.
  *
  * Discard is the other place in the plugin that destroys staged work, so it is
@@ -146,7 +146,7 @@ final class Post_List {
 		}
 
 		/*
-		 * A second state rather than a longer first one (VIPPROD-1248), the
+		 * A second state rather than a longer first one, the
 		 * same way `staged_edits_stranded` above is: core joins every state in this
 		 * array with its own separator, so "Staged changes" stays one
 		 * sentence a translator can work with on its own, and this is a
@@ -256,7 +256,7 @@ final class Post_List {
 	 * The same establishment the editor's control and the redirected save use,
 	 * with nothing to write: the copy holds the published content and the
 	 * editor opens on it. Where a copy already exists this lands on it, so a
-	 * stale row action never creates a second copy (AE22).
+	 * stale row action never creates a second copy.
 	 *
 	 * @return void
 	 */
@@ -345,7 +345,7 @@ final class Post_List {
 
 		Staged_Copy_Repository::unlink( $live_id, $staged_copy->ID );
 
-		// Force-delete, never trash (R14). A trashed staged copy keeps a full copy of
+		// Force-delete, never trash. A trashed staged copy keeps a full copy of
 		// unreviewed content discoverable in the admin after it was discarded.
 		wp_delete_post( $staged_copy->ID, true );
 

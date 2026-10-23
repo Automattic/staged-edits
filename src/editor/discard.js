@@ -4,10 +4,10 @@
  * "Move to trash" is the right instinct and the wrong words: a staged copy
  * cannot be trashed. `Transitions::discard_trashed_staged_copy()` already
  * unlinks and force-deletes anything that reaches the trash, because a staged
- * copy sitting there holds unreviewed content and is still discoverable (R14).
+ * copy sitting there holds unreviewed content and is still discoverable.
  *
  * This used to be a capture-phase click intercept on core's trash button. It is
- * a fill now (R53, KTD37): the control is ours, it is verb-first and destructive
+ * a fill now: the control is ours, it is verb-first and destructive
  * the way core's own is, and it links the same nonced confirmation the posts
  * list and the classic editor link. That screen names the post and says the
  * change cannot be restored, which core's "move to the trash" dialog does not.

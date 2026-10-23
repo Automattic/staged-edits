@@ -1,6 +1,6 @@
 /**
  * Takes the controls for fields that cannot be staged off a staged copy's
- * screen (VIPPROD-1228).
+ * screen.
  *
  * Ten controls sit in the Summary panel of an ordinary published post --
  * Publish, Slug, Author, Template, Discussion, Format, Featured image,
@@ -29,7 +29,7 @@
  * A stylesheet rule (`panel-rows.scss`) covers Publish, Slug, Template,
  * Author, and Format, which core does not gate by panel name at all. It is
  * scoped to this plugin's own Status row the same way the existing rule that
- * hides core's Status row is (R53): if the script never ran, nothing is
+ * hides core's Status row is: if the script never ran, nothing is
  * hidden. Two of the five rows -- Author, Format -- carry no distinguishing
  * class in the rendered DOM (checked against the live markup, not guessed
  * from source), so the stylesheet keys on the toggle button's own

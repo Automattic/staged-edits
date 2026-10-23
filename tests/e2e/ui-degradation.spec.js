@@ -306,7 +306,7 @@ test.describe( 'When the editor chrome cannot attach', () => {
 
 		await openEditor( page, stagedCopyId );
 
-		// The plugin ships no logging of its own (KTD38): the hook is how a site
+		// The plugin ships no logging of its own: the hook is how a site
 		// learns that its editors are looking at core's words.
 		await expect
 			.poll(

@@ -19,13 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Refuses any change to a staged copy outside title, content, and excerpt (R29).
+ * Refuses any change to a staged copy outside title, content, and excerpt.
  *
  * The client lock is a courtesy; this is the boundary. A crafted request, an
  * older editor build, or the Publish button reaching a staged copy all arrive here,
  * and the answer has to be the same for each.
  *
- * Refusing rather than silently stripping is deliberate: AE12 says the change is
+ * Refusing rather than silently stripping is deliberate: the documented contract is that the change is
  * refused, and an editor whose category edit vanished without comment would
  * reasonably call that data loss.
  *
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Every refusal from this class answers with the error code `staged_edits_field_locked`,
  * HTTP 403, and a `field` data key naming the first locked parameter the request
  * would have changed. That triple is API, not an incident identifier, and it is
- * documented here the way `staged_edits_staged` is (KTD35):
+ * documented here the way `staged_edits_staged` is:
  *
  * - The code is what the editor's own request middleware keys on to recognise a
  *   click that reached core's publish control on a staged copy and turn it back
@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * It will not be renamed. Integrations may match on it.
  *
- * ## `meta` is the one exception, and it is not in the list above (VIPPROD-755)
+ * ## `meta` is the one exception, and it is not in the list above
  *
  * Every other locked field refuses the whole write, deliberately (the
  * doc-block above). `meta` used to be enforced the same way -- any non-empty
@@ -60,7 +60,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * So `meta` is handled once the lock has passed, by `strip_unstageable_meta()`:
  * a request's `meta` array is narrowed to the staged set (`STAGED_META_KEYS`,
- * empty until VIPPROD-755 T4 gives it real members) and whatever was removed is
+ * empty until meta staging gives it real members) and whatever was removed is
  * named on `staged_edits_meta_keys_dropped` and the `X-Staged-Edits-Meta-Dropped` response
  * header, rather than costing the rest of the save. A write that is refused
  * for some other locked field is refused whole, meta included, and announces
@@ -80,7 +80,7 @@ final class Field_Lock {
 	 * `Staged_Copy_Repository::copy_locked_fields()` copies at fork, so a
 	 * taxonomy this list once had no opinion about -- a site's own, or a
 	 * plugin's -- is locked the same way core's two are, whatever its own
-	 * `rest_base` happens to be (VIPPROD-755). `meta` is not here either;
+	 * `rest_base` happens to be. `meta` is not here either;
 	 * see the class doc-block.
 	 */
 	private const LOCKED_PARAMS = array(
@@ -103,12 +103,12 @@ final class Field_Lock {
 	/**
 	 * Meta keys a staged copy may keep from a request's `meta` array.
 	 *
-	 * Empty for now (VIPPROD-755 Phase 0): no meta key is part of the staged
+	 * Empty for now: no meta key is part of the staged
 	 * field set, so every key arriving in `meta` is dropped, named, and
 	 * warned about rather than being written or costing the rest of the
 	 * save. A real allowlist -- core's revisioned meta by default, a site's
-	 * own editorial keys by filter -- is VIPPROD-755 T4's job. Widening this
-	 * constant before T4 lands would widen the staged field set without the
+	 * own editorial keys by filter -- is later work. Widening this
+	 * constant before that lands would widen the staged field set without the
 	 * merge, the drift check, or the review surface knowing anything changed,
 	 * which is exactly what this phase of the ticket was told not to do.
 	 *
@@ -120,7 +120,7 @@ final class Field_Lock {
 	 * Dropped meta keys this request stripped, keyed by staged copy ID.
 	 *
 	 * Request-scoped, on the same reasoning `Write_Guard`'s own request-scoped
-	 * arrays give (KTD29/KTD30): the question the response header answers is
+	 * arrays give: the question the response header answers is
 	 * "did this request drop something", not "does this post have dropped
 	 * meta on file anywhere", which nothing persists.
 	 *
@@ -228,7 +228,7 @@ final class Field_Lock {
 	 * make ordinary saves fail.
 	 *
 	 * The static list is checked first, then every taxonomy of the copy's own
-	 * post type (VIPPROD-755) -- `categories` and `tags` among them, since
+	 * post type -- `categories` and `tags` among them, since
 	 * `taxonomy_params()` returns core's two taxonomies by their REST params
 	 * like any other. One loop rather than two lists kept in step is the
 	 * point: a taxonomy the fork copies for fidelity is a taxonomy this
@@ -267,8 +267,7 @@ final class Field_Lock {
 	}
 
 	/**
-	 * Every taxonomy this class locks on a staged copy, by taxonomy name
-	 * (VIPPROD-1228).
+	 * Every taxonomy this class locks on a staged copy, by taxonomy name.
 	 *
 	 * A thin public wrapper around `taxonomy_params()` rather than widening
 	 * that method's own visibility: this keeps the one enumeration the write
@@ -286,7 +285,7 @@ final class Field_Lock {
 
 	/**
 	 * Every REST-exposed taxonomy of a post type, keyed by the REST param
-	 * name each is exposed under (VIPPROD-755).
+	 * name each is exposed under.
 	 *
 	 * Reads `get_object_taxonomies()` the same way
 	 * `Staged_Copy_Repository::copy_locked_fields()` does to decide what the
@@ -386,7 +385,7 @@ final class Field_Lock {
 
 	/**
 	 * Narrows a request's `meta` array to the staged set, rather than
-	 * refusing the whole write for carrying a key outside it (VIPPROD-755).
+	 * refusing the whole write for carrying a key outside it.
 	 *
 	 * Runs after `attempted_locked_change()` has passed, and only then: `meta`
 	 * is no longer in `LOCKED_PARAMS`, so this is the whole of its

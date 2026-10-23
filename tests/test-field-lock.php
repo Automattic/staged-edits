@@ -1,7 +1,7 @@
 <?php
 /**
- * Field-lock tests for U5 (R29, R30), and for the taxonomy enumeration and
- * meta handling VIPPROD-755 added to it.
+ * Field-lock tests, and tests for the taxonomy enumeration and meta
+ * handling added to it.
  *
  * @package StagedEdits
  */
@@ -92,7 +92,7 @@ class Test_Field_Lock extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE12. Publishing a staged copy directly is refused.
+	 * Publishing a staged copy directly is refused.
 	 *
 	 * This is the Publish button in the editor: without this the staged content
 	 * goes live in one click, bypassing the merge entirely.
@@ -105,7 +105,7 @@ class Test_Field_Lock extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE12. Changing the slug is refused, so KTD8's determinism holds.
+	 * Changing the slug is refused, so the staged copy's deterministic slug holds.
 	 */
 	public function test_changing_the_staged_copy_slug_is_refused(): void {
 		$response = $this->update_staged_copy( array( 'slug' => 'something-else' ) );
@@ -115,7 +115,7 @@ class Test_Field_Lock extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE12. Changing terms is refused.
+	 * Changing terms is refused.
 	 */
 	public function test_changing_terms_is_refused(): void {
 		$category = self::factory()->category->create( array( 'name' => 'Collections' ) );
@@ -130,7 +130,7 @@ class Test_Field_Lock extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE12. Changing the featured image is refused.
+	 * Changing the featured image is refused.
 	 */
 	public function test_changing_featured_media_is_refused(): void {
 		$attachment = self::factory()->attachment->create_upload_object( DIR_TESTDATA . '/images/canola.jpg' );
@@ -190,7 +190,7 @@ class Test_Field_Lock extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The refusal shape is contract, not an incident identifier (KTD35).
+	 * The refusal shape is contract, not an incident identifier.
 	 *
 	 * The editor's request middleware keys on this code to recognise a click that
 	 * reached core's publish control on a staged copy and turn it back into the
@@ -214,7 +214,7 @@ class Test_Field_Lock extends WP_UnitTestCase {
 }
 
 /**
- * VIPPROD-755: a taxonomy the fork copies for fidelity is locked on the copy
+ * A taxonomy the fork copies for fidelity is locked on the copy
  * exactly like `categories` and `tags`, whatever its own REST param is.
  *
  * Before this, `LOCKED_PARAMS` hardcoded `categories` and `tags` and nothing
@@ -369,7 +369,7 @@ class Test_Field_Lock_Taxonomy_Enumeration extends WP_UnitTestCase {
 }
 
 /**
- * VIPPROD-755: a locked `meta` key is stripped and warned about, not
+ * A locked `meta` key is stripped and warned about, not
  * refused wholesale.
  *
  * Before this, any non-empty `meta` array refused the entire REST write to a
@@ -564,7 +564,7 @@ class Test_Field_Lock_Meta extends WP_UnitTestCase {
 		$this->assertSame(
 			'',
 			get_post_meta( $this->staged_copy_id, 'footnotes', true ),
-			'The staged-meta set is empty until VIPPROD-755 T4; footnotes must not have been written.'
+			'The staged-meta set is empty until meta staging; footnotes must not have been written.'
 		);
 
 		$this->assertCount( 1, $dropped, 'The dropped-keys warning did not fire exactly once.' );
@@ -617,7 +617,7 @@ class Test_Field_Lock_Meta extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers VIPPROD-1228. `locked_taxonomies()` is the editor bundle's own
+	 * `locked_taxonomies()` is the editor bundle's own
 	 * source for which taxonomy panels to take off a staged copy's screen, so
 	 * it has to agree with what the write guard actually locks -- both core's
 	 * two and a plugin's own -- or the editor would leave a control on

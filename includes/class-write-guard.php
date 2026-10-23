@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Once a staged copy exists, nothing writes this post's staged fields (R41, R55).
+ * Once a staged copy exists, nothing writes this post's staged fields.
  *
  * Two rules, and the second one used to be softer than it is now. A first write
  * by someone who cannot publish forks a staged copy and lands in it. Every write
  * after that, to either the published post or through any transport, is refused
  * until the copy is published or discarded.
  *
- * A third, added later and narrower (VIPPROD-1246): the copy itself may not be
+ * A third, added later and narrower: the copy itself may not be
  * given any status but staged or trash. Neither of the two rules above protects
  * this, because both judge a write to the *published* post; a write straight to
  * the copy's own status was never a write either rule had reason to see.
@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * to the live post while the plugin's headline said otherwise. Every one of them
  * ends in `wp_insert_post()`, so that is where the rule now lives.
  *
- * The pair of hooks is not a choice of taste (KTD28). `wp_insert_post_data` can
+ * The pair of hooks is not a choice of taste. `wp_insert_post_data` can
  * reshape the row but cannot stop it -- core unslashes whatever it returns with
  * no `is_wp_error()` check -- and `wp_insert_post_empty_content` is the only
  * abort inside `wp_insert_post()` that fires on every transport. So the divert
@@ -64,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Deciding and doing are separate: `classify()` answers what would happen with
  * nothing written, and `divert()` is the only thing that acts on the answer. The
  * split exists so `would_divert()` can hand the same answer to a surface that
- * has to refuse a write before it is ever attempted (KTD33), rather than that
+ * has to refuse a write before it is ever attempted, rather than that
  * surface growing a second copy of this predicate.
  *
  * ## Why the second rule refuses rather than diverts
@@ -72,7 +72,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * It used to divert: a write to a post with a staged copy had its staged fields
  * redirected into the copy and was answered 200. The live post was never
  * touched, so the headline guarantee held, and the write was never lost. It was
- * still wrong, and R55 is the correction.
+ * still wrong, and refusing is the correction.
  *
  * The value being diverted is assembled against the live row. Somebody editing
  * the published post is reading published words, so what their editor sends is
@@ -83,7 +83,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * so one edited paragraph replaces the entire staged body.
  *
  * Making the divert safe would mean merging two bodies of text, which is a diff
- * tool, which the plan rules out. So the copy is the only place its own fields
+ * tool this plugin deliberately does not have. So the copy is the only place its own fields
  * are written from.
  *
  * ## What this costs an integration, and why there is no filter for it
@@ -105,7 +105,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Write_Guard {
 
 	/**
-	 * Channels whose first write may publish on the carve-out seam (KTD30b).
+	 * Channels whose first write may publish on the carve-out seam.
 	 *
 	 * Enumerated, never inferred from what is missing. `internal`, `classic`, and
 	 * `quickedit` are absent because a human is behind them; `cron` is absent
@@ -113,7 +113,7 @@ final class Write_Guard {
 	 * read, and a cron write that somehow carries one is safer staged.
 	 *
 	 * `quickedit` never reaches this list in practice: it is refused a few lines
-	 * earlier, because its row cannot show what staging did to it (KD15). Being
+	 * earlier, because its row cannot show what staging did to it. Being
 	 * absent here as well is the second lock -- removing the refusal must not
 	 * quietly turn Quick Edit into a publishing seam.
 	 *
@@ -143,11 +143,11 @@ final class Write_Guard {
 
 	/**
 	 * A staged copy is being given a status other than staged or trash, so the
-	 * write is refused (VIPPROD-1246).
+	 * write is refused.
 	 *
 	 * Distinct from `BLOCK`, which refuses a write to a *published* post because
 	 * a copy exists for it. This refuses a write to the *copy itself* that would
-	 * take it out of containment -- the one status transition R55's refusal
+	 * take it out of containment -- the one status transition the live-post refusal
 	 * never had to consider, because nothing routed a status write to a staged
 	 * copy until something outside the editor did.
 	 */
@@ -166,7 +166,7 @@ final class Write_Guard {
 	/**
 	 * The post ID whose live write is sanctioned for this call, or 0.
 	 *
-	 * A post ID rather than a boolean (KTD29). A merge's `wp_update_post()` fires
+	 * A post ID rather than a boolean. A merge's `wp_update_post()` fires
 	 * core's whole `save_post` chain, and a third-party listener writing to some
 	 * other post from inside that chain would ride a boolean sanction straight
 	 * past the containment on a post it has nothing to do with.
@@ -220,7 +220,7 @@ final class Write_Guard {
 	/**
 	 * Whether the guard is currently writing to a staged copy.
 	 *
-	 * Reentrancy is already clean by construction (KTD31): `establish()` inserts a
+	 * Reentrancy is already clean by construction: `establish()` inserts a
 	 * staged-status row and the field write updates one, while the guard only
 	 * matches updates to `publish` rows. This is the second layer, so a change to
 	 * either side cannot quietly turn the divert into a loop.
@@ -262,7 +262,7 @@ final class Write_Guard {
 	}
 
 	/**
-	 * Runs the plugin's own write to a live post past the containment (KTD29).
+	 * Runs the plugin's own write to a live post past the containment.
 	 *
 	 * The merge is the one writer allowed to land staged content on the live
 	 * post; without this its `wp_update_post()` would be diverted straight back
@@ -290,7 +290,7 @@ final class Write_Guard {
 	}
 
 	/**
-	 * Diverts a contained write into the staged copy, or fails it closed (R41, R47).
+	 * Diverts a contained write into the staged copy, or fails it closed.
 	 *
 	 * Returns `false` on a successful divert, deliberately overriding whatever
 	 * core thought about emptiness: the live update should carry on and land as a
@@ -381,7 +381,7 @@ final class Write_Guard {
 
 		if ( self::REFUSE === $verdict['decision'] ) {
 			/*
-			 * The fail-closed backstop from KTD33, and the one place the data
+			 * The fail-closed backstop, and the one place the data
 			 * layer is allowed to reach for `wp_die()`. The decision is only ever
 			 * REFUSE on the `quickedit` channel, which is core's inline-save ajax
 			 * request and nothing else -- so the ajax scoping `wp_die()` needs is
@@ -406,13 +406,13 @@ final class Write_Guard {
 	 * What the guard would do with this write, without doing any of it.
 	 *
 	 * Split out of `divert()` so the Quick Edit handler can ask the question one
-	 * hook earlier and answer it on its own surface (KTD33). The two must not
+	 * hook earlier and answer it on its own surface. The two must not
 	 * drift: the handler refuses exactly the writes this would divert, so a
 	 * predicate of its own would eventually refuse a write that publishes, or
 	 * publish one that vanishes into a copy. There is one predicate, and this is
 	 * it.
 	 *
-	 * Ordered cheapest first (KTD30), reaching its one primary-key meta read only
+	 * Ordered cheapest first, reaching its one primary-key meta read only
 	 * after six cheaper questions have already said yes.
 	 *
 	 * @param array $postarr Slashed, sanitized post data.
@@ -459,8 +459,8 @@ final class Write_Guard {
 		 * discard at shutdown) and deletion, which is not a status write at all.
 		 * Anything else -- `publish`, `future`, `draft`, `pending`, `private` --
 		 * would let the copy become an ordinary post of its own, still carrying
-		 * both pointers, while the published post it stages sits untouched
-		 * (VIPPROD-1246). Nothing downstream of this file catches that: the
+		 * both pointers, while the published post it stages sits untouched.
+		 * Nothing downstream of this file catches that: the
 		 * REST-only `Field_Lock` never sees a WP-CLI or plugin write, and the
 		 * containment below only judges a write to a *published* post.
 		 *
@@ -521,7 +521,7 @@ final class Write_Guard {
 		}
 
 		/*
-		 * Only the staged fields whose value actually differs (R41, R42). Core
+		 * Only the staged fields whose value actually differs. Core
 		 * merges the live row into `$postarr` before this hook sees it, so every
 		 * write carries all three fields whether or not the writer touched them --
 		 * diverting all three would overwrite staged work nobody asked to change,
@@ -544,11 +544,11 @@ final class Write_Guard {
 
 		if ( $staged_copy instanceof WP_Post ) {
 			/*
-			 * Tier 1. No capability check and no user check: R41 is true as
+			 * Tier 1. No capability check and no user check: the rule holds as
 			 * written, including for a write with no authenticated user.
 			 *
 			 * The answer is a refusal rather than a divert, and the difference is
-			 * the whole of R55. Diverting looked like the safer half of the same
+			 * the whole of this rule. Diverting looked like the safer half of the same
 			 * guarantee -- the live post is untouched either way -- but the value
 			 * it diverted was assembled against the live row, not the staged one.
 			 * An editor on the published post is looking at published words, so
@@ -579,7 +579,7 @@ final class Write_Guard {
 	/**
 	 * Whether this write would keep its staged fields off the published post.
 	 *
-	 * The narrow internal KTD33 needs, and the only thing outside the guard that
+	 * The narrow internal check the fail-closed backstop needs, and the only thing outside the guard that
 	 * may ask: it runs the same predicate `divert()` runs, one hook earlier, with
 	 * nothing written and no event fired. A surface that cannot represent staging
 	 * uses it to refuse before the write is attempted.
@@ -621,7 +621,7 @@ final class Write_Guard {
 	}
 
 	/**
-	 * Decides what a first write to an unstaged post does (R43, R45, R46, KTD30b).
+	 * Decides what a first write to an unstaged post does.
 	 *
 	 * Four outcomes, mutually exclusive, at most one event between them:
 	 *
@@ -629,7 +629,7 @@ final class Write_Guard {
 	 *    An ordinary save by someone who may publish has never fired an event and
 	 *    does not start now.
 	 * 2. The write arrived from Quick Edit, whose row cannot show what staging did
-	 *    to it, so it is refused (KD15, KTD33).
+	 *    to it, so it is refused.
 	 * 3. No capability, but the write positively identifies as programmatic and
 	 *    the seam is open: it publishes and says so.
 	 * 4. Anything else stages.
@@ -717,7 +717,7 @@ final class Write_Guard {
 	}
 
 	/**
-	 * Whether this site has closed the programmatic first-save seam (KD16).
+	 * Whether this site has closed the programmatic first-save seam.
 	 *
 	 * Open by default, and that is a decision rather than an oversight. Closing it
 	 * by default would divert the writes of every programmatic client already
@@ -983,7 +983,7 @@ final class Write_Guard {
 	}
 
 	/**
-	 * The transport this write arrived on (KTD38).
+	 * The transport this write arrived on.
 	 *
 	 * Best-effort by design, and worth saying so plainly: core exposes no request
 	 * origin at this seam, so every arm below is an inference from a constant, a

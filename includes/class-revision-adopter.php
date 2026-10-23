@@ -49,7 +49,7 @@ final class Revision_Adopter {
 	/**
 	 * Moves the staged copy's regular revisions onto the live post.
 	 *
-	 * Autosaves are deliberately excluded (KTD5). Adopting one would give the
+	 * Autosaves are deliberately excluded. Adopting one would give the
 	 * live post a second autosave and make core offer the editor a restore
 	 * nobody asked for, pointing at content that was never reviewed.
 	 *
@@ -217,8 +217,8 @@ final class Revision_Adopter {
 		 * longer the staged copy's is not this merge's to move, so zero affected
 		 * rows means nothing was adopted here and the caller is told so.
 		 *
-		 * Idempotence comes from the query rather than from this return value
-		 * (KTD19): a resumed merge only ever sees revisions still parented to
+		 * Idempotence comes from the query rather than from this return value:
+		 * a resumed merge only ever sees revisions still parented to
 		 * the staged copy, so the ones it already moved are never offered again.
 		 */
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Core exposes no API to re-file a revision; the cache is cleaned explicitly below.

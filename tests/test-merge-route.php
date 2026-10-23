@@ -1,6 +1,6 @@
 <?php
 /**
- * Merge route tests for U7.
+ * Merge route tests.
  *
  * @package StagedEdits
  */
@@ -173,7 +173,7 @@ class Test_Merge_Route extends WP_UnitTestCase {
 
 	/**
 	 * A timestamp-shaped confirmation -- the override's whole shape before
-	 * VIPPROD-752 -- is refused at the route, not silently accepted as half
+	 * content fingerprints -- is refused at the route, not silently accepted as half
 	 * of the new token.
 	 */
 	public function test_a_timestamp_shaped_confirmation_is_refused_at_the_route(): void {

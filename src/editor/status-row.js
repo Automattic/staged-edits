@@ -9,7 +9,7 @@
  * to change is the one the panel declines to name.
  *
  * This used to be fixed by rewriting core's row in place, with a MutationObserver
- * to survive its re-renders. It is a fill now (R53, KTD37): the row is ours, it
+ * to survive its re-renders. It is a fill now: the row is ours, it
  * is rendered through core's own extensibility slot, and core's row is hidden by
  * a stylesheet rule scoped to this fill's presence. The scoping is the whole
  * safety property -- the stylesheet loads whether or not the script does, so an

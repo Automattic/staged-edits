@@ -1,6 +1,6 @@
 <?php
 /**
- * Staged copy repository tests for U3 (R3, R24, R29).
+ * Staged copy repository tests.
  *
  * @package StagedEdits
  */
@@ -56,7 +56,7 @@ class Test_Staged_Copy_Repository extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The live post is untouched by a fork (R1).
+	 * The live post is untouched by a fork.
 	 */
 	public function test_create_does_not_modify_the_live_post(): void {
 		$before = get_post( $this->live_id );
@@ -71,7 +71,7 @@ class Test_Staged_Copy_Repository extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE2. A second create returns the existing staged copy.
+	 * A second create returns the existing staged copy.
 	 */
 	public function test_create_returns_the_existing_staged_copy(): void {
 		$first  = Staged_Copy_Repository::create( get_post( $this->live_id ) );
@@ -120,7 +120,7 @@ class Test_Staged_Copy_Repository extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The staged copy slug is deterministic and never equals the live slug (KTD8).
+	 * The staged copy slug is deterministic and never equals the live slug.
 	 */
 	public function test_staged_copy_slug_differs_from_the_live_slug(): void {
 		$live   = get_post( $this->live_id );
@@ -131,7 +131,7 @@ class Test_Staged_Copy_Repository extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Locked fields are copied so the staged copy reads as a faithful copy (KTD18).
+	 * Locked fields are copied so the staged copy reads as a faithful copy.
 	 */
 	public function test_locked_fields_are_copied_at_fork(): void {
 		$category_id = self::factory()->category->create( array( 'name' => 'Collections' ) );
@@ -225,7 +225,7 @@ class Test_Staged_Copy_Repository extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Pointer meta is protected, so it is never exposed over REST (KTD14).
+	 * Pointer meta is protected, so it is never exposed over REST.
 	 */
 	public function test_pointer_meta_is_protected(): void {
 		$this->assertTrue( is_protected_meta( Staged_Copy_Repository::STAGED_COPY_META, 'post' ) );

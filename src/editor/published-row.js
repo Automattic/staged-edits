@@ -24,7 +24,7 @@
  * screen can open that one, and `liveEdit` is empty only where the plugin could
  * not name the published post at all.
  *
- * The help line names where those fields went (VIPPROD-1228), now that
+ * The help line names where those fields went, now that
  * `unstageable-fields.js` has taken their controls off this screen. A fixed
  * list rather than a report of what was actually hidden here, so it reads the
  * same on every staged copy whatever panels a given site happens to register:

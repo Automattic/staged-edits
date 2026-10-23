@@ -1,6 +1,6 @@
 <?php
 /**
- * Merge marker and resume tests for U13 (R16, R33).
+ * Merge marker and resume tests.
  *
  * @package StagedEdits
  */
@@ -100,7 +100,7 @@ class Test_Merge_Resume extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE11. Every phase resumes, and resumes at the phase it stopped in.
+	 * Every phase resumes, and resumes at the phase it stopped in.
 	 *
 	 * @dataProvider phases
 	 *
@@ -320,7 +320,7 @@ class Test_Merge_Resume extends WP_UnitTestCase {
 	 * Completion fires the merge-completed event exactly once.
 	 *
 	 * A resume that re-enters a finished merge finds no marker, so it can
-	 * neither re-fire the event nor re-run the merge behind it (R11).
+	 * neither re-fire the event nor re-run the merge behind it.
 	 */
 	public function test_completion_fires_the_event_exactly_once(): void {
 		Merge_Marker::start( $this->live_id, $this->staged_copy_id );

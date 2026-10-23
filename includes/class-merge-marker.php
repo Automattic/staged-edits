@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Records the phase a merge reached, so an interrupted one can be resumed.
  *
- * Lives on the live post as one protected meta value (KTD16). Absence is
+ * Lives on the live post as one protected meta value. Absence is
  * meaningful: it means no merge is in flight, which is how recovery tells a
  * healthy staged copy from a wedged one. That is why every phase transition writes
  * before the step it describes, never after -- a marker written afterwards
@@ -50,7 +50,7 @@ final class Merge_Marker {
 	/**
 	 * A merge that failed too many times to keep retrying.
 	 *
-	 * Not a phase of the merge; a terminal state that only U14's CLI clears.
+	 * Not a phase of the merge; a terminal state that only the repair command clears.
 	 */
 	public const PHASE_STRANDED = 'stranded';
 
@@ -225,7 +225,7 @@ final class Merge_Marker {
 	 * Flips the marker to stranded.
 	 *
 	 * Deliberately keeps the marker rather than clearing it: the marker is the
-	 * only record of which phase the merge died in, and U14's repair needs it.
+	 * only record of which phase the merge died in, and `wp staged-edits repair` needs it.
 	 *
 	 * @param int $live_id Live post ID.
 	 * @return void
@@ -248,7 +248,7 @@ final class Merge_Marker {
 	/**
 	 * Returns a stranded merge to the phase it died in, with a fresh budget.
 	 *
-	 * Only U14's CLI calls this, deliberately. Reviving automatically would
+	 * Only the repair command calls this, deliberately. Reviving automatically would
 	 * defeat the attempt cap and put both posts back in the loop the cap exists
 	 * to break; a person running a command has decided the underlying cause is
 	 * addressed.
@@ -295,7 +295,7 @@ final class Merge_Marker {
 	 *
 	 * The marker is the guard. Clearing it and firing the event in one place
 	 * means a resume that re-enters a finished merge finds no marker, does
-	 * nothing, and fires nothing -- which is what R11's "exactly once per
+	 * nothing, and fires nothing -- which is what "exactly once per
 	 * applied merge" requires when a merge can be entered more than once.
 	 *
 	 * @param int $live_id Live post ID.
@@ -341,12 +341,11 @@ final class Merge_Marker {
 		 *     @type int    $merged_by   User who applied the merge.
 		 *     @type bool   $drifted     Whether the live post moved while staged.
 		 *     @type string $override    The state token confirmed against, when it drifted.
-		 *     @type string $drift_kind  `'content'`, `'other'`, or `'unknown'`, when it drifted (VIPPROD-752).
+		 *     @type string $drift_kind  `'content'`, `'other'`, or `'unknown'`, when it drifted.
 		 *     @type int[]  $revisions   Staged revisions adopted onto the live post.
 		 *     @type int[]  $attachments Attachments moved onto the live post.
 		 *     @type string $scheduled_for GMT time this merge was scheduled to run at, or `''`
-		 *                                 for a merge applied directly rather than by a schedule
-		 *                                 (VIPPROD-1247).
+		 *                                 for a merge applied directly rather than by a schedule.
 		 * }
 		 */
 		do_action( 'staged_edits_merge_completed', $live_id, self::payload( $marker ) );
@@ -385,7 +384,7 @@ final class Merge_Marker {
 	 *
 	 * The marker drives the two most destructive steps in the plugin, force
 	 * deletion and reparenting, so it is revalidated exactly like a pointer
-	 * (KTD14) rather than trusted because it was written by us.
+	 * rather than trusted because it was written by us.
 	 *
 	 * The one exception is the final phase. The merge clears both pointers
 	 * immediately before deleting the staged copy, on purpose, because a pointer to

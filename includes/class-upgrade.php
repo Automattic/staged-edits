@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * settled on one word for the second copy. A site that old is carried forward
  * by the same step: the key is renamed straight to its current name.
  *
- * A staged copy created before VIPPROD-752 carries a fork baseline timestamp
+ * A staged copy created before drift fingerprints carries a fork baseline timestamp
  * but no fingerprint, which `Drift::kind()` reads as `unknown` once the live
  * post moves -- the same answer a missing baseline gets, and by design: an
  * unbackfilled copy behaves exactly as drift detection did before this
@@ -59,8 +59,8 @@ final class Upgrade {
 	 * Current stored-state version.
 	 *
 	 * 1 is everything before the pointer rename, including installs that predate
-	 * this option and therefore read as 0. 3 adds the fork fingerprint
-	 * (VIPPROD-752). 4 is the plugin's own rename, `swpub` to `staged_edits`.
+	 * this option and therefore read as 0. 3 adds the fork fingerprint.
+	 * 4 is the plugin's own rename, `swpub` to `staged_edits`.
 	 */
 	private const VERSION = 4;
 
@@ -335,7 +335,7 @@ final class Upgrade {
 	}
 
 	/**
-	 * Backfills the fork fingerprint for staged copies that predate it (VIPPROD-752).
+	 * Backfills the fork fingerprint for staged copies that predate it.
 	 *
 	 * The fingerprint means "the live post's title, content, and excerpt at
 	 * the moment staging began". The only place those exact bytes still exist

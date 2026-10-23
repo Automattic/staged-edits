@@ -1,6 +1,6 @@
 <?php
 /**
- * Merge tests for U7 (R8, R9, R10, R11, R30, R31).
+ * Merge tests.
  *
  * @package StagedEdits
  */
@@ -99,7 +99,7 @@ class Test_Merge extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE4. Staged content lands, history is adopted, staged copy is gone.
+	 * Staged content lands, history is adopted, staged copy is gone.
 	 */
 	public function test_a_merge_lands_content_history_and_removes_the_staged_copy(): void {
 		$staged_revisions = $this->revisions_of( $this->staged_copy_id );
@@ -124,7 +124,7 @@ class Test_Merge extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE4. The pre-merge published content is restorable.
+	 * The pre-merge published content is restorable.
 	 *
 	 * This is the promise the whole product rests on: a merge is undoable.
 	 */
@@ -149,7 +149,7 @@ class Test_Merge extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The newest revision matches the merged content (KTD6).
+	 * The newest revision matches the merged content.
 	 *
 	 * If core's revision were suppressed on the merge write, the newest
 	 * revision would be the pre-merge snapshot while the post held merged
@@ -170,7 +170,7 @@ class Test_Merge extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE12's second half. Everything except the staged fields is intact.
+	 * Everything except the staged fields is intact.
 	 *
 	 * A merge that carried the staged copy's status or slug across would unpublish
 	 * the article and break every inbound link.
@@ -326,7 +326,7 @@ class Test_Merge extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE13. Two merges of one post produce one applied merge.
+	 * Two merges of one post produce one applied merge.
 	 *
 	 * Re-entered from inside the veto filter, which is the last moment before
 	 * the first merge starts writing.
@@ -483,8 +483,8 @@ class Test_Merge extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A merge that proceeded over drift records what kind it was
-	 * (VIPPROD-752), both in the completion event and in the one moment
+	 * A merge that proceeded over drift records what kind it was,
+	 * both in the completion event and in the one moment
 	 * the plugin announces overwriting somebody else's edit.
 	 */
 	public function test_a_merge_over_drift_records_the_kind(): void {

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Quick Edit refuses, and a classic save lands somewhere it can be understood (R44).
+ * Quick Edit refuses, and a classic save lands somewhere it can be understood.
  *
  * The write guard made staging true on every transport. That is the guarantee,
  * and it is silent: `edit_post()` returns the post ID whatever `wp_update_post()`
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * guard without a line of the plugin's JavaScript on the page, and each has to
  * say for itself what happened.
  *
- * Quick Edit says it by refusing (KD15). Its row is rebuilt from the published
+ * Quick Edit says it by refusing. Its row is rebuilt from the published
  * post, so a staged Quick Edit redisplays the old title with no path to the copy
  * -- an edit that appears to have vanished. There is no honest way to render
  * staging in that row, so the write is refused with an instruction instead, and
@@ -58,7 +58,7 @@ final class Admin_Surfaces {
 	private const ARRIVAL_ARG = 'staged_edits_forked';
 
 	/**
-	 * Marks a classic redirect as following a refused save (R55).
+	 * Marks a classic redirect as following a refused save.
 	 *
 	 * Its own argument rather than a value on `ARRIVAL_ARG`, because the two say
 	 * opposite things: one means the change was staged and the editor was moved to
@@ -87,7 +87,7 @@ final class Admin_Surfaces {
 
 	/**
 	 * Takes the classic editor's controls for fields that cannot be staged
-	 * off a staged copy's screen (VIPPROD-1228).
+	 * off a staged copy's screen.
 	 *
 	 * The block editor's twin of this is `src/editor/unstageable-fields.js`;
 	 * this is cheaper, because the classic editor has no equivalent of
@@ -134,7 +134,7 @@ final class Admin_Surfaces {
 	/**
 	 * Refuses a Quick Edit whose change would not land on the published post.
 	 *
-	 * Verify first, refuse second (KTD33). The nonce and the post's own edit
+	 * Verify first, refuse second. The nonce and the post's own edit
 	 * capability are checked before anything is asked about staging, and both
 	 * failures return silently rather than dying: a refusal is an answer, and a
 	 * forged `post_ID` would otherwise let any logged-in user probe whether some
@@ -257,7 +257,7 @@ final class Admin_Surfaces {
 	}
 
 	/**
-	 * What the refusal says when a staged copy already holds this post's title (R55).
+	 * What the refusal says when a staged copy already holds this post's title.
 	 *
 	 * A different sentence from the one above, because a different thing is true
 	 * and a different thing has to be done about it. There, the remedy is to open
@@ -281,7 +281,7 @@ final class Admin_Surfaces {
 	}
 
 	/**
-	 * Stops the classic editor reporting a refused save as a successful one (R55).
+	 * Stops the classic editor reporting a refused save as a successful one.
 	 *
 	 * `edit_post()` ignores what `wp_update_post()` returned -- it reads the value
 	 * only to decide whether to retry with stripped text -- so a save the guard

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="Staged Edits">
-	<description>VIP coding standards are a gate on every change, not a cleanup pass (R25).</description>
+	<description>VIP coding standards are a gate on every change, not a cleanup pass.</description>
 
 	<file>.</file>
 

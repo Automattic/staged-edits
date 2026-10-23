@@ -205,7 +205,7 @@ test.describe( 'Reviewing a staged change', () => {
 		await showDocumentPanel( page );
 
 		// The in-editor review link still exists and is still offered; it
-		// only cannot show this particular change (VIPPROD-753, F2).
+		// only cannot show this particular change.
 		await expect( reviewControl( page ) ).toBeVisible();
 
 		const notice = page
@@ -234,7 +234,7 @@ test.describe( 'Reviewing a staged change', () => {
 			tab.locator( '.diff-addedline' ).filter( { hasText: 'Autumn' } )
 		).toHaveCount( 1 );
 
-		// Restoring has nothing left to mean here either (D4), and the
+		// Restoring has nothing left to mean here either, and the
 		// screen still knows this is a staged copy's own history.
 		await expect( tab.locator( '.restore-revision' ) ).toHaveCount( 0 );
 		await expect( tab.locator( 'body.staged-edits-staged' ) ).toHaveCount(
@@ -265,7 +265,7 @@ test.describe( 'Reviewing a staged change', () => {
  *
  * Every row below used to be written into core's own markup by a
  * MutationObserver, and the trash button used to be a capture-phase click
- * intercept. Both are fills now (R53), and what these assert is the part a
+ * intercept. Both are fills now, and what these assert is the part a
  * unit test cannot see: that the fill renders where core puts fills, that the
  * control it supersedes is gone rather than sitting beside it, and that the
  * words are the ones the vocabulary table says they are.
@@ -351,7 +351,7 @@ test.describe( 'The staged copy speaks through registered slots', () => {
 		await showDocumentPanel( page );
 
 		// This whole test is about the in-editor view; below WordPress 7.0
-		// review lands on the classic screen instead (VIPPROD-753), which
+		// review lands on the classic screen instead, which
 		// "the classic surface diffs the change, and offers no Restore"
 		// below covers.
 		test.skip(
@@ -443,8 +443,8 @@ test.describe( 'The staged copy speaks through registered slots', () => {
 		await showDocumentPanel( page );
 
 		// The click takeover this asserts (`publish-changes.js`) is specific
-		// to the in-editor view; the classic surface (below WordPress 7.0,
-		// VIPPROD-753) offers no publish-from-review action to take over --
+		// to the in-editor view; the classic surface (below WordPress 7.0)
+		// offers no publish-from-review action to take over --
 		// only Restore to withhold, which the sibling test below covers.
 		test.skip(
 			( await reviewSurface( page ) ) === 'classic',
@@ -495,7 +495,7 @@ test.describe( 'The staged copy speaks through registered slots', () => {
 
 		// The in-editor tests above cover this same ground on the surface
 		// WordPress 7.0+ opens by default; below that version review lands
-		// here instead (VIPPROD-753).
+		// here instead.
 		test.skip(
 			( await reviewSurface( page ) ) !== 'classic',
 			'The in-editor surface has its own tests above.'
@@ -522,7 +522,7 @@ test.describe( 'The staged copy speaks through registered slots', () => {
 			page.locator( '.diff-addedline' ).filter( { hasText: 'staged' } )
 		).toHaveCount( 1 );
 
-		// Restoring has nothing left to mean on a staged copy (D4): core's own
+		// Restoring has nothing left to mean on a staged copy: core's own
 		// button is withheld here rather than left pointing at a discard.
 		await expect( page.locator( '.restore-revision' ) ).toHaveCount( 0 );
 
@@ -601,9 +601,9 @@ test.describe( 'The staged copy speaks through registered slots', () => {
 
 		await expect( review ).toHaveText( 'Staged' );
 
-		// Core's revisions view, which R23 makes the only review surface --
-		// the in-editor one on WordPress 7.0+, the classic one below it
-		// (VIPPROD-753). Which revision it opens on is pinned by the tests
+		// Core's revisions view, which is the only review surface --
+		// the in-editor one on WordPress 7.0+, the classic one below it.
+		// Which revision it opens on is pinned by the tests
 		// above; here the point is that the row's value is a route to one of
 		// the two at all.
 		const reviewHref = await review.getAttribute( 'href' );
@@ -626,7 +626,7 @@ test.describe( 'The staged copy speaks through registered slots', () => {
 		// there by `order`, which leaves the DOM alone. Measured against the
 		// Publish at row -- a fill with no `order` of its own, rendered after
 		// this one in the slot -- rather than core's Publish date row, which
-		// a staged copy no longer shows at all (VIPPROD-1228).
+		// a staged copy no longer shows at all.
 		const status = await row.boundingBox();
 		const publishAt = await page
 			.locator( '.staged-edits-schedule-row' )
@@ -712,7 +712,7 @@ test.describe( 'The staged copy speaks through registered slots', () => {
  *
  * Core offers them "Submit for Review", which is a state this plugin does not
  * have and a word its vocabulary rules out -- and the click stages instead. The
- * button has to say so before it is pressed (R52).
+ * button has to say so before it is pressed.
  */
 test.describe( 'The published post, for someone whose save stages', () => {
 	let liveId;
@@ -756,7 +756,7 @@ test.describe( 'The published post, for someone whose save stages', () => {
 		// Core's own label here, with no publish capability, is "Submit for
 		// Review" -- a word this plugin's vocabulary rules out, and no more
 		// honest than "Stage changes": the copy owns the title, content, and
-		// excerpt now, and a write to any of them is refused (VIPPROD-1171).
+		// excerpt now, and a write to any of them is refused.
 		createStagedCopyFor( liveId );
 
 		await openEditor( page, liveId );
@@ -768,7 +768,7 @@ test.describe( 'The published post, for someone whose save stages', () => {
 		await expect( publishButton( page ) ).toBeDisabled();
 
 		// The title is read-only here: typing into it changes nothing, and
-		// the editor never counts the post as dirty for it (VIPPROD-1121).
+		// the editor never counts the post as dirty for it.
 		const title = titleField( page );
 
 		await expect( title ).toHaveAttribute( 'contenteditable', 'false' );
@@ -818,7 +818,7 @@ test.describe( 'The published post, for someone whose save stages', () => {
 	test( 'a category still saves from the published post once a copy exists', async ( {
 		page,
 	} ) => {
-		// R42 with a copy already standing: a category touches none of the
+		// With a copy already standing: a category touches none of the
 		// three fields the copy owns, so it still applies to the published
 		// post exactly as core, whoever is saving it.
 		createStagedCopyFor( liveId );
