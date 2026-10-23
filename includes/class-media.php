@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * has no record of it.
  *
  * Nothing here deletes an attachment, in any path. A discard leaves uploads in
- * the library on purpose (R20): an editor who abandons a draft edit should not
+ * the library on purpose: an editor who abandons a draft edit should not
  * lose the photo they uploaded for it.
  */
 final class Media {
@@ -97,11 +97,11 @@ final class Media {
 	/**
 	 * Moves recorded attachments from the staged copy to the live post.
 	 *
-	 * Idempotent by attachment ID (KTD19): an attachment already on the live
+	 * Idempotent by attachment ID: an attachment already on the live
 	 * post is skipped, so a resumed merge finishing a half-done set cannot
 	 * double-apply. Each ID is revalidated against the staged copy before it moves,
 	 * because the recorded list comes from the merge marker and the marker is
-	 * never trusted (KTD14) -- a stale or tampered entry would otherwise
+	 * never trusted -- a stale or tampered entry would otherwise
 	 * reparent an attachment belonging to an unrelated post.
 	 *
 	 * @param int   $live_id        Live post ID.

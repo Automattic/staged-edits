@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Redirects a save of a published post onto its staged copy (R2, KTD1).
+ * Redirects a save of a published post onto its staged copy.
  *
  * Core's REST pre-insert filter is the only seam that runs before the write and
  * still lets the target change: the controller hands the prepared object
  * straight to the update, so rewriting its ID redirects the write. Everything
  * later receives a where-clause already bound to the live post.
  *
- * This is the backstop, not the block editor's protocol (R49). The editor
+ * This is the backstop, not the block editor's protocol. The editor
  * recognises a save that will stage and sends it to `Stage_Route` deliberately,
  * which answers 200 with the staged copy's ID. This path stays underneath that
  * one because the editor's protocol is JavaScript, and JavaScript that failed to
@@ -36,10 +36,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Fork {
 
 	/**
-	 * Fields a save may carry onto a staged copy (KTD17, R29).
+	 * Fields a save may carry onto a staged copy.
 	 *
 	 * Anything else the client sent is dropped. A request-supplied `post_name`
-	 * would otherwise overwrite the deterministic slug KTD8 depends on, and a
+	 * would otherwise overwrite the deterministic slug the pair depends on, and a
 	 * status would fight the staged status this filter forces.
 	 */
 	private const ALLOWED_FIELDS = array(
@@ -76,7 +76,7 @@ final class Fork {
 	}
 
 	/**
-	 * Attaches the per-post-type pre-insert filters (KTD23).
+	 * Attaches the per-post-type pre-insert filters.
 	 *
 	 * On `rest_api_init` rather than the plugin's own early `init`: the hook is
 	 * dynamic and must be attached per post type, and most plugins and themes
@@ -94,7 +94,7 @@ final class Fork {
 	}
 
 	/**
-	 * Refuses a REST write to a published post that already has a staged copy (R55).
+	 * Refuses a REST write to a published post that already has a staged copy.
 	 *
 	 * Ahead of `maybe_fork()` and outside its cookie gate, and both of those are
 	 * the point.
@@ -105,7 +105,7 @@ final class Fork {
 	 * write reverted every staged change it did not carry. The refusal has to land
 	 * before anything is written, not as a nicer message afterwards.
 	 *
-	 * Outside the cookie gate, because R55 holds for every transport and this is
+	 * Outside the cookie gate, because the refusal holds for every transport and this is
 	 * the only seam that can say so in words. `Write_Guard` refuses underneath on
 	 * all of them, but only through core's `empty_content` abort, whose message
 	 * names the wrong problem. An application password or OAuth client that used
@@ -139,7 +139,7 @@ final class Fork {
 		}
 
 		/*
-		 * A save that changes nothing stageable is not blocked (R42). A category
+		 * A save that changes nothing stageable is not blocked. A category
 		 * edit, a slug change, or a sticky toggle on the published post touches
 		 * nothing a staged copy holds, so there is nothing for the copy to lose
 		 * and no reason to make an editor clear it first.
@@ -170,7 +170,7 @@ final class Fork {
 	 * Redirects the write to a staged copy when staging applies.
 	 *
 	 * Returns the prepared post unchanged where staging does not apply, and a
-	 * `WP_Error` where staging applies but could not be established (KTD12).
+	 * `WP_Error` where staging applies but could not be established.
 	 * The distinction is the whole fail-closed guarantee: returning the prepared
 	 * post on a failure path would write the edit to the live post.
 	 *
@@ -212,7 +212,7 @@ final class Fork {
 	 * The plugin owns this write rather than letting the controller do it,
 	 * because returning an error from this filter aborts the controller before
 	 * its own write. That is the point: the controller would otherwise go on to
-	 * write terms, meta, and featured media against the staged copy, and R29 forbids
+	 * write terms, meta, and featured media against the staged copy, and the staged field set forbids
 	 * staging any of those. Aborting it enforces the staged field set at the
 	 * only place a crafted request cannot get past.
 	 *
@@ -248,15 +248,15 @@ final class Fork {
 	 * write succeeded, which arms the unsaved-changes guard and blocks the
 	 * navigation. An error is a shape the editor already understands.
 	 *
-	 * The editor no longer arrives here on the ordinary path (R49): it recognises
+	 * The editor no longer arrives here on the ordinary path: it recognises
 	 * a save that will stage and asks `Stage_Route` for it, which answers 200. So
 	 * a save that lands here is a save whose editor protocol did not run, and
 	 * `staged_edits_staged_via_backstop` says so.
 	 *
 	 * This is the first save only. A save onto a post that already has a copy used
 	 * to arrive here too -- including from someone who may publish directly, which
-	 * KTD38 treated as a first-class case rather than a fallback -- and it was
-	 * answered by writing the request into the copy. R55 refuses that write at
+	 * the design treated as a first-class case rather than a fallback -- and it was
+	 * answered by writing the request into the copy. That write is now refused at
 	 * `refuse_locked_live_post()` instead, one priority earlier, so nothing
 	 * reaches here with a copy already in place and the alarm has one meaning
 	 * again: the editor's protocol did not run.
@@ -264,8 +264,8 @@ final class Fork {
 	 * A token client never sees this 409 and never did. `live_post_for()` gates
 	 * the whole seam on a valid `wp_rest` nonce, so only a cookie-authenticated
 	 * editor save reaches it; an application password, OAuth, or XML-RPC write is
-	 * contained by `Write_Guard` instead and answered 200 with the `staged_edits` field
-	 * (R48). Worth saying plainly, because the natural assumption from an error
+	 * contained by `Write_Guard` instead and answered 200 with the `staged_edits` field.
+	 * Worth saying plainly, because the natural assumption from an error
 	 * code is that every client can meet it.
 	 *
 	 * @param WP_Post $live        The published post the save targeted.
@@ -341,7 +341,7 @@ final class Fork {
 		}
 
 		/*
-		 * A save that changes nothing stageable is not a staging save (R42). The
+		 * A save that changes nothing stageable is not a staging save. The
 		 * editor sends a term change, a slug edit, or a sticky toggle to this
 		 * same endpoint, and none of them can live on a staged copy: forking one
 		 * would create a copy holding no change, redirect the editor onto it, and
@@ -410,7 +410,7 @@ final class Fork {
 	}
 
 	/**
-	 * Whether the request is a cookie-authenticated editor save (KTD20, R21).
+	 * Whether the request is a cookie-authenticated editor save.
 	 *
 	 * A valid `wp_rest` nonce is the signal. Core exposes no block-editor marker
 	 * at this seam -- the editor is only a REST client -- and application
@@ -435,7 +435,7 @@ final class Fork {
 	}
 
 	/**
-	 * The fail-closed error (R19, KTD12).
+	 * The fail-closed error.
 	 *
 	 * @return WP_Error An error carrying a message the editor can act on.
 	 */

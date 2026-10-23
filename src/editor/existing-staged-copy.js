@@ -2,12 +2,11 @@
  * What a published post does when someone has already staged a change to it.
  *
  * Five things: it says so, naming the three locked fields and stating that
- * everything else cannot be staged and goes live at once when saved from here
- * (VIPPROD-1230), and naming when the copy is due to publish itself, if it
- * is (VIPPROD-1247); it stops the canvas from being typed into (R55),
+ * everything else cannot be staged and goes live at once when saved from here,
+ * and naming when the copy is due to publish itself, if it
+ * is; it stops the canvas from being typed into,
  * it stops the title the same way, it takes the excerpt field off the screen,
- * and it disables saving while a locked field is dirty anyway (VIPPROD-1171,
- * VIPPROD-1121).
+ * and it disables saving while a locked field is dirty anyway.
  *
  * The save lock exists because the other three do not cover every way a
  * locked field can end up dirty. A save carrying one still reaches the write
@@ -17,7 +16,7 @@
  * `PostPublishButton` already reads to grey itself out -- means the button
  * simply cannot be clicked while that is true, rather than being clicked and
  * refused. It is scoped to the three fields, not to the whole screen: a
- * category or a featured image saved from here still applies (R42), so
+ * category or a featured image saved from here still applies, so
  * locking every time anything is dirty would refuse a save this screen is
  * supposed to make.
  *
@@ -87,7 +86,7 @@ function who( ctx ) {
 }
 
 /**
- * Says when the staged copy will publish itself, if it will (VIPPROD-1247).
+ * Says when the staged copy will publish itself, if it will.
  *
  * "Those changes" rather than "these": `who()`'s sentence is about this
  * post, and the changes it names belong to the copy, not to the screen the
@@ -147,7 +146,7 @@ function useLockedCanvas( ctx ) {
 }
 
 /**
- * Disables saving while a write from here would be refused (VIPPROD-1171).
+ * Disables saving while a write from here would be refused.
  *
  * Reads the edit set directly rather than through `edits.js`'s `dirtyFields()`:
  * that function answers null off a screen it cannot read, which the request
@@ -251,7 +250,7 @@ function editorDocuments() {
 
 /**
  * Makes the title read-only while a staged copy holds this post's next
- * change (R55, VIPPROD-1121).
+ * change.
  *
  * `PostTitle` has no public read-only prop on any version this plugin
  * supports. WP 7.0 added a private one -- the `h1` core renders is not
@@ -424,7 +423,7 @@ function useLockedTitle( ctx ) {
 
 /**
  * Takes the excerpt field off a published post while a staged copy holds this
- * post's next change (VIPPROD-1121).
+ * post's next change.
  *
  * `removeEditorPanel()` is public and stable on every version this plugin
  * supports, so unlike the title there is no selector here and nothing for the
@@ -492,7 +491,7 @@ export function ExistingStagedCopyNotice() {
 				// screen can offer is the way over to that copy. Compare as
 				// text rides along when a title or excerpt changed, since the
 				// in-editor view that copy's own review link opens cannot
-				// show either (VIPPROD-753, F2).
+				// show either.
 				actions: [ ...editStaged( ctx ), ...compareAsText( ctx ) ],
 			}
 		);

@@ -153,7 +153,7 @@ Not everything that can change the published post is caught. A term, meta, or fe
 
 A schedule is a deferred **Publish changes**, by a named person, and nothing more: at the set time the same merge runs, as that person, refused for every reason it refuses a click. There is no second publishing path here to keep in step with the first.
 
-Whoever may publish the copy may schedule it -- the same authority `Capabilities::current_user_can_manage()` resolves everywhere else, checked against the published post rather than the copy (KTD13). The scheduled time lives in its own meta on the copy, never on its `post_date`: that field already means the moment staging began, which `Merge_Marker` records as `forked_at`, and it stays locked for exactly that reason -- scheduling a publish does not change what "staged" already means.
+Whoever may publish the copy may schedule it -- the same authority `Capabilities::current_user_can_manage()` resolves everywhere else, checked against the published post rather than the copy. The scheduled time lives in its own meta on the copy, never on its `post_date`: that field already means the moment staging began, which `Merge_Marker` records as `forked_at`, and it stays locked for exactly that reason -- scheduling a publish does not change what "staged" already means.
 
 On the staged copy, the Summary panel carries a **Publish at** row beside **Staged changes**. Unscheduled, it reads **Immediately** -- the true answer to what the next **Publish changes** does, not a placeholder for a control nobody has used yet. Opening it offers the same date and time picker core's own Publish row uses, and **Schedule**; once a time is set the row shows it, and the same control offers **Change** or **Clear**. The staged copy's own notice names the scheduled time too, and if a scheduled run was refused, a second notice says when it was due and why -- the published post changed first, the person who scheduled it can no longer publish, the pair is stranded, or staging was off at the time -- without repeating the ordinary drift warning, since a schedule refused for drift already says the more specific version of the same fact. The published post's own notice names the time as well, alongside who staged the change and what is locked here. The posts list reads **Staged changes, Scheduled**, or, after a refusal, **Staged changes, Schedule stopped**.
 
@@ -343,7 +343,7 @@ array(
     'drift_kind'     => 'content',              // 'content', 'other', or 'unknown' when it drifted
     'revisions'      => array( 15, 16, 17 ),    // staged revisions adopted
     'attachments'    => array( 44 ),            // media moved to the published post
-    'scheduled_for'  => '2026-09-22 09:00:00',  // GMT time this was scheduled to run at, or '' when it was not scheduled (VIPPROD-1247)
+    'scheduled_for'  => '2026-09-22 09:00:00',  // GMT time this was scheduled to run at, or '' when it was not scheduled
 )
 ```
 

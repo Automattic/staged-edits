@@ -1,6 +1,6 @@
 <?php
 /**
- * Media reparenting tests for U8 (R20).
+ * Media reparenting tests.
  *
  * @package StagedEdits
  */
@@ -71,7 +71,7 @@ class Test_Media extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE7. An attachment uploaded while staging lands on the live post.
+	 * An attachment uploaded while staging lands on the live post.
 	 */
 	public function test_a_staged_attachment_reparents_on_merge(): void {
 		$attachment_id = $this->attach_to( $this->staged_copy_id );
@@ -84,7 +84,7 @@ class Test_Media extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE7. A discarded staged copy leaves its uploads in the library.
+	 * A discarded staged copy leaves its uploads in the library.
 	 *
 	 * An editor who abandons an edit should not lose the photo they uploaded
 	 * for it. Core points a deleted post's attachments up one level rather than

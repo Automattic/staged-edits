@@ -81,7 +81,7 @@ test.describe( 'A publisher and a published post', () => {
 	test( 'the primary button keeps reading Save after a copy exists', async ( {
 		page,
 	} ) => {
-		// The case the label used to get *less* accurate for (VIPPROD-1171): a
+		// The case the label used to get *less* accurate for: a
 		// publisher's button correctly reads "Save" before a copy exists, and
 		// used to flip to "Stage changes" -- the one thing a save from here
 		// cannot do -- once one did.
@@ -135,8 +135,7 @@ test.describe( 'A publisher and a published post', () => {
 		// Someone who can publish, saving a post that already has a copy. The
 		// copy owns the title, content, and excerpt now: the canvas and the
 		// title are read-only, the save lock behind them still holds if a
-		// title edit reaches the store some other way (VIPPROD-1171,
-		// VIPPROD-1121). Nothing reaches either post on either route, and the
+		// title edit reaches the store some other way. Nothing reaches either post on either route, and the
 		// fork underneath never carried it.
 		const stagedCopyId = createStagedCopyFor( liveId );
 

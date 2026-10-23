@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Resolves capability checks on a staged copy against its live post (KTD13, R28).
+ * Resolves capability checks on a staged copy against its live post.
  *
  * A staged copy must never be easier to reach than the post it stages. Left to core,
  * it would be: on an internal status the published-post branch does not apply,
@@ -123,7 +123,7 @@ final class Capabilities {
 		/*
 		 * A stranded staged copy has no live post to resolve against, but denying
 		 * outright would make it undiscardable and therefore permanent -- the
-		 * opposite of R17, which requires it be surfaced for an editor to clear.
+		 * opposite of the requirement that it be surfaced for an editor to clear.
 		 * Fall back to the post type's others-authority instead, which is
 		 * stricter than core's default for an internal status and still lets
 		 * someone clean up.

@@ -1,6 +1,6 @@
 <?php
 /**
- * The machine-client REST response for U4 (R48, R50).
+ * The machine-client REST response.
  *
  * @package StagedEdits
  */
@@ -188,7 +188,7 @@ class Test_Rest_Response extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE24, response half. A staged write is a success, and names the copy.
+	 * A staged write is a success, and names the copy.
 	 *
 	 * The 200 and the live-state body are already true once the guard diverts the
 	 * write, because the divert leaves the controller with an ordinary successful
@@ -197,7 +197,7 @@ class Test_Rest_Response extends WP_UnitTestCase {
 	 * handed back its own values unchanged, with nothing anywhere saying why.
 	 *
 	 * On a first write with the seam closed, which is the one shape a token client
-	 * can still stage in. R55 refuses a token write onto a post that already has a
+	 * can still stage in. The plugin refuses a token write onto a post that already has a
 	 * copy, so the case this used to assert is now a 409 and is covered in
 	 * `Test_Write_Guard`. Closing the seam is what a site does when it wants
 	 * programmatic writes staged rather than published, and it is the only way a
@@ -269,7 +269,7 @@ class Test_Rest_Response extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A write that stages nothing says so, and lands live exactly as core (R42).
+	 * A write that stages nothing says so, and lands live exactly as core.
 	 */
 	public function test_a_write_touching_no_staged_field_reports_nothing_staged(): void {
 		$this->stage();
@@ -291,7 +291,7 @@ class Test_Rest_Response extends WP_UnitTestCase {
 	 * The field is in the route's schema, which is what makes it a contract.
 	 *
 	 * An extra key nobody documented is something a client finds by accident and
-	 * cannot rely on. R48 promises a documented field, so the OPTIONS output is
+	 * cannot rely on. The README promises a documented field, so the OPTIONS output is
 	 * where that promise is either kept or not.
 	 */
 	public function test_the_field_is_documented_in_the_route_schema(): void {
@@ -327,7 +327,7 @@ class Test_Rest_Response extends WP_UnitTestCase {
 	/**
 	 * The editor's cookie save keeps the 409 fork it has today.
 	 *
-	 * The regression guard for U5's backstop: the block editor moves onto the
+	 * The regression guard for the field-lock backstop: the block editor moves onto the
 	 * staging route there, and the 409 stays underneath it as the fail-closed
 	 * path. Nothing in this unit may touch it, so its shape is pinned here.
 	 */

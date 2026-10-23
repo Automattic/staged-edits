@@ -42,7 +42,7 @@ const publishedPhrase = () =>
 	__( 'the published post as it is now', 'staged-edits' );
 
 /**
- * Says when this staged copy is due to publish itself, if it is (VIPPROD-1247).
+ * Says when this staged copy is due to publish itself, if it is.
  *
  * Not offered on a stranded copy: `Scheduled_Publish::schedule()` refuses to
  * schedule one in the first place, so `ctx.scheduledFor` is only ever set here
@@ -67,8 +67,7 @@ function scheduledSentence( ctx ) {
 }
 
 /**
- * The sentence explaining why a scheduled publish did not happen
- * (VIPPROD-1247).
+ * The sentence explaining why a scheduled publish did not happen.
  *
  * Every reason ends the same way in substance -- nothing published, nothing
  * lost -- because that is true whichever one fired. What differs is *why*,
@@ -311,7 +310,7 @@ export function StagedNotices() {
 
 			// Offered here, not on the Status row (one word, one control):
 			// a title or excerpt change is invisible on the in-editor
-			// revisions view, which diffs blocks (VIPPROD-753, F2).
+			// revisions view, which diffs blocks.
 			actions: compareAsText( ctx ),
 		} );
 
@@ -357,7 +356,7 @@ export function StagedNotices() {
 				 * "View Post" label, the permalink, and a new tab. Opened by
 				 * hand (`toRead()`) rather than through the snackbar's own
 				 * `openInNewTab`, which core's snackbar silently ignores
-				 * below WordPress 7.0 (VIPPROD-753, F6) -- this way the tab
+				 * below WordPress 7.0 -- this way the tab
 				 * opens the same way on every version this plugin supports.
 				 */
 				actions: ctx.liveView
@@ -393,10 +392,10 @@ export function StagedNotices() {
 		/*
 		 * This warns; it does not gate. The refusal that actually protects the
 		 * live post is server-side, re-checked immediately before the merge
-		 * writes (KTD15), because anything the browser decides can be skipped by
+		 * writes, because anything the browser decides can be skipped by
 		 * not using the browser.
 		 *
-		 * The wording splits on `driftKind` (VIPPROD-752) the same way the
+		 * The wording splits on `driftKind` the same way the
 		 * merge's own refusal does: a change to title, content, or excerpt is
 		 * something publishing could overwrite, and anything else provably
 		 * is not, since the merge never writes it. `reviewPublishedHistory()`

@@ -1,6 +1,6 @@
 <?php
 /**
- * Scaffold tests for U1.
+ * Scaffold tests.
  *
  * @package StagedEdits
  */
@@ -37,14 +37,14 @@ class Test_Plugin_Loads extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Staging is on by default (R5, KD1 -- no opt-in).
+	 * Staging is on by default, with no opt-in.
 	 */
 	public function test_staging_is_enabled_by_default(): void {
 		$this->assertTrue( is_enabled() );
 	}
 
 	/**
-	 * The kill switch disables staging without deactivating the plugin (R32).
+	 * The kill switch disables staging without deactivating the plugin.
 	 */
 	public function test_kill_switch_filter_disables_staging(): void {
 		add_filter( 'staged_edits_is_enabled', '__return_false' );

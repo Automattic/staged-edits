@@ -1,6 +1,6 @@
 <?php
 /**
- * Post list and discard tests for U9 (R14, R15, R16, R28).
+ * Post list and discard tests.
  *
  * @package StagedEdits
  */
@@ -111,7 +111,7 @@ class Test_Post_List extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A staged copy with an active schedule reads distinctly (VIPPROD-1248).
+	 * A staged copy with an active schedule reads distinctly.
 	 */
 	public function test_a_scheduled_staged_copy_is_labelled_distinctly(): void {
 		$at = gmdate( 'Y-m-d\TH:i:s\Z', time() + HOUR_IN_SECONDS );
@@ -127,7 +127,7 @@ class Test_Post_List extends WP_UnitTestCase {
 
 	/**
 	 * A staged copy whose last scheduled run was refused reads distinctly,
-	 * and no longer as scheduled (VIPPROD-1248).
+	 * and no longer as scheduled.
 	 */
 	public function test_a_schedule_refused_staged_copy_is_labelled_distinctly(): void {
 		update_post_meta(

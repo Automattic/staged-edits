@@ -24,7 +24,7 @@
  * refuses with `staged_edits_drift` and this catches it. So publishing straight from
  * the click gives up no protection at all.
  *
- * The click takeover is cosmetic, not load-bearing (KTD36). There is no public
+ * The click takeover is cosmetic, not load-bearing. There is no public
  * header slot to render into, and a portal into core's header markup would
  * trade this selector for a worse one and give up core's own busy, disabled and
  * shortcut wiring. So the selector stays, and the guarantee moves off it: if it
@@ -352,7 +352,7 @@ export function PublishChanges() {
 					/*
 					 * The exact state the editor was shown is sent back
 					 * verbatim, as the one token that names both the
-					 * timestamp and the content (VIPPROD-752). The server
+					 * timestamp and the content. The server
 					 * compares it for equality against the live post read
 					 * at that moment, so a confirmation only ever applies
 					 * to the change actually reviewed.

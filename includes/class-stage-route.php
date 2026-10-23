@@ -19,10 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Stages a change without publishing anything first (R37, R38).
+ * Stages a change without publishing anything first.
  *
  * It began as the way someone who can publish asks for staging, and it is now
- * the block editor's primary save protocol for staging outright (R49): the
+ * the block editor's primary save protocol for staging outright: the
  * editor recognises a save that is going to stage -- whoever is making it, and
  * whether or not the post already has a staged copy -- and sends it here rather
  * than to the post endpoint. `Fork`'s 409 stays underneath as the backstop for a
@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Stage_Route {
 
 	/**
-	 * The fields a staged copy can carry (R29).
+	 * The fields a staged copy can carry.
 	 */
 	private const STAGED_FIELDS = array( 'title', 'content', 'excerpt' );
 
@@ -180,7 +180,7 @@ final class Stage_Route {
 		}
 
 		/*
-		 * Staging is for a post that has nothing staged yet (R55). This route is
+		 * Staging is for a post that has nothing staged yet. This route is
 		 * the deliberate first save, and asking it to stage a second time over an
 		 * existing copy is the destructive case wearing the polite door's clothes:
 		 * the request was composed in an editor showing the published words, so

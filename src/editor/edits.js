@@ -9,7 +9,7 @@
  */
 
 /**
- * The fields a staged copy can hold (R29), as the REST post resource names them.
+ * The fields a staged copy can hold, as the REST post resource names them.
  */
 export const STAGED_FIELDS = [ 'title', 'content', 'excerpt' ];
 

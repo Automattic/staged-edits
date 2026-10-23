@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers the post status that staged copy posts live in.
  *
- * Containment (R18) is a property of this status, not of plugin code that could
+ * Containment is a property of this status, not of plugin code that could
  * be missed. Registering it as internal makes core exclude staged copies from
  * front-end queries, search, feeds, sitemaps, oEmbed, public REST reads, and
  * logged-out permalink access without the plugin filtering any of those
- * individually (KTD2).
+ * individually.
  *
  * Deliberately no `pre_get_posts` filtering: duplicating core's own exclusion
  * would add a second mechanism that can drift out of step with the first.
@@ -89,7 +89,7 @@ final class Status {
 				// Keeps staged copies out of site search.
 				'exclude_from_search'       => true,
 
-				// Keeps staged copies out of the admin post list; U9 surfaces them
+				// Keeps staged copies out of the admin post list; the post list surfaces them
 				// on the live post's row instead.
 				'show_in_admin_all_list'    => false,
 				'show_in_admin_status_list' => false,

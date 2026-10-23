@@ -1,7 +1,7 @@
 /**
- * The staged copy's own control for publishing at a set time (VIPPROD-1248).
+ * The staged copy's own control for publishing at a set time.
  *
- * Everything this row does already exists server-side (VIPPROD-1247): the
+ * Everything this row does already exists server-side: the
  * route it calls, the merge that runs at the set time, every refusal. This
  * is the one surface an editor reaches it from without a terminal.
  *

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * The `staged_edits` response field, for the clients that are not the editor (R48).
+ * The `staged_edits` response field, for the clients that are not the editor.
  *
  * A token client's write to a post with a staged copy already succeeds and
  * already returns 200: the guard contains the write, the live row comes back
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * the published ones -- correct in every byte and unreadable as anything but a
  * bug. This field is the sentence that was missing.
  *
- * It sits in its own file rather than in `Write_Guard` on the split KD14 draws:
+ * It sits in its own file rather than in `Write_Guard` on the split the design draws:
  * the capability decides whether a write stages, and the transport decides only
  * how that outcome is presented. `Admin_Surfaces` is the same seam for Quick Edit
  * and the classic editor. Keeping the presentation out of the guard is what stops
@@ -84,7 +84,7 @@ final class Rest_Response {
 	}
 
 	/**
-	 * What this request staged for this post, or null (KTD32).
+	 * What this request staged for this post, or null.
 	 *
 	 * Reads the guard's request-scoped engagement record, never the pointer meta,
 	 * and the distinction is the whole design. The meta answers "does this post
@@ -129,8 +129,8 @@ final class Rest_Response {
 	 *
 	 * Written out rather than left off so the field appears in the route's OPTIONS
 	 * output. An undocumented extra key in a response is something a client
-	 * discovers by accident and cannot rely on; this is a contract, and R48 says
-	 * so in those words.
+	 * discovers by accident and cannot rely on; this is a contract, and the README documents
+	 * it as one.
 	 *
 	 * @return array<string, mixed> The schema.
 	 */

@@ -20,12 +20,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Answers one question: has the published post moved since this staged copy forked?
  *
  * Detection compares the live post's GMT modified time and the fingerprint of
- * its staged fields against the values the fork recorded (KTD11). GMT because
+ * its staged fields against the values the fork recorded. GMT because
  * a site timezone change shifts local timestamps and would break the
  * comparison in both directions. Both, rather than the timestamp alone,
  * because a merge that silently overwrites someone's edit is the failure this
  * product exists to prevent, and a timestamp move with no content behind it
- * (VIPPROD-752, `kind()`) costs one confirmation for something the merge
+ * (`kind()`) costs one confirmation for something the merge
  * would never have overwritten anyway.
  */
 final class Drift {
@@ -48,7 +48,7 @@ final class Drift {
 	/**
 	 * A byte-exact fingerprint of the fields a merge actually writes.
 	 *
-	 * Not normalised (VIPPROD-752): the merge overwrites bytes, so bytes are
+	 * Not normalised: the merge overwrites bytes, so bytes are
 	 * what drift is. This is what lets a content change be told apart from
 	 * everything else that can move `post_modified_gmt` -- and, paired with
 	 * the timestamp, what lets a content change be caught even when the
@@ -67,7 +67,7 @@ final class Drift {
 	 *
 	 * Binding the timestamp and the fingerprint together in one hash, rather
 	 * than sending each separately, is what makes a single equality check
-	 * (KTD15) enough: a confirmation obtained before a content change that
+	 * enough: a confirmation obtained before a content change that
 	 * preserved the timestamp names a state that no longer exists once that
 	 * change lands, exactly as one obtained before an ordinary edit does.
 	 *
@@ -94,7 +94,7 @@ final class Drift {
 	 * with the same fingerprint is `'other'`: something changed that the
 	 * merge never writes, such as a category. Where the recorded evidence
 	 * cannot say -- no baseline timestamp at all, or a timestamp that moved
-	 * on a copy with no recorded fingerprint (created before VIPPROD-752 and
+	 * on a copy with no recorded fingerprint (created before content fingerprints and
 	 * not backfillable) -- the answer is `'unknown'`, which is treated
 	 * exactly as drift always was.
 	 *
@@ -146,7 +146,7 @@ final class Drift {
 	 *
 	 * Re-reads the live post from the database rather than trusting anything
 	 * loaded earlier in the request, which closes the window between the check
-	 * and the write that R21 leaves open by design: an ungated writer can touch
+	 * and the write that is left open by design: an ungated writer can touch
 	 * the live post at any moment, including between an editor's drift check and
 	 * their merge.
 	 *
@@ -188,7 +188,7 @@ final class Drift {
 		}
 
 		/*
-		 * Equality, not "not older" (KTD15). An ordering test lets a client send
+		 * Equality, not "not older". An ordering test lets a client send
 		 * a token it captured once and satisfy the check on every later request,
 		 * forever, which turns the override into an unconditional bypass. Naming
 		 * the fingerprint as well as the timestamp closes the same door one layer
@@ -241,7 +241,7 @@ final class Drift {
 	 * The live post's own history, on whichever revisions screen reviews a
 	 * staged change (`Review_Link::surface()`).
 	 *
-	 * This is what a refused merge offers (R13). It is core's screen,
+	 * This is what a refused merge offers. It is core's screen,
 	 * unmodified, opened on the most recent revision -- which for drift is
 	 * exactly the change being asked about, because that revision is the
 	 * write that caused it. Core names its own "revision before this one"

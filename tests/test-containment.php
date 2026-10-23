@@ -1,6 +1,6 @@
 <?php
 /**
- * Containment tests for U2 (R18).
+ * Containment tests.
  *
  * These assert core's behaviour, not the plugin's. The containment guarantee is
  * that registering the status as internal makes WordPress itself exclude staged copies
@@ -87,7 +87,7 @@ class Test_Containment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE5. A logged-out visitor hitting the permalink gets nothing.
+	 * A logged-out visitor hitting the permalink gets nothing.
 	 */
 	public function test_logged_out_permalink_serves_no_content(): void {
 		$this->go_to( get_permalink( $this->staged_id ) );
@@ -130,7 +130,7 @@ class Test_Containment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE5. The staged post is absent from the front-page loop.
+	 * The staged post is absent from the front-page loop.
 	 */
 	public function test_staged_post_is_absent_from_the_front_page_loop(): void {
 		$this->go_to( home_url( '/' ) );
@@ -142,7 +142,7 @@ class Test_Containment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE5. Site search does not surface staged content.
+	 * Site search does not surface staged content.
 	 */
 	public function test_staged_post_is_absent_from_site_search(): void {
 		$this->go_to( home_url( '/?s=Embargoed' ) );
@@ -153,7 +153,7 @@ class Test_Containment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE5. The feed does not carry staged content.
+	 * The feed does not carry staged content.
 	 */
 	public function test_staged_post_is_absent_from_the_feed(): void {
 		$this->go_to( home_url( '/?feed=rss2' ) );
@@ -164,7 +164,7 @@ class Test_Containment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE5. The sitemap lists published posts only.
+	 * The sitemap lists published posts only.
 	 */
 	public function test_staged_post_is_absent_from_the_sitemap(): void {
 		$provider = wp_sitemaps_get_server()->registry->get_provider( 'posts' );
@@ -175,14 +175,14 @@ class Test_Containment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE5. oEmbed refuses to describe a staged post.
+	 * oEmbed refuses to describe a staged post.
 	 */
 	public function test_oembed_refuses_a_staged_post(): void {
 		$this->assertFalse( get_oembed_response_data( get_post( $this->staged_id ), 600 ) );
 	}
 
 	/**
-	 * Covers AE5. An anonymous REST read of the item is refused.
+	 * An anonymous REST read of the item is refused.
 	 */
 	public function test_anonymous_rest_item_request_is_refused(): void {
 		$response = rest_get_server()->dispatch(
@@ -194,7 +194,7 @@ class Test_Containment extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE5. The staged status is not an accepted REST collection filter.
+	 * The staged status is not an accepted REST collection filter.
 	 *
 	 * Core builds the `status` enum from statuses registered as non-internal, so
 	 * an internal status cannot be requested by any client at all.
@@ -260,7 +260,7 @@ class Test_Containment extends WP_UnitTestCase {
 	/**
 	 * Search-index containment cannot be proven in this environment.
 	 *
-	 * VIP Search is a platform plugin that wp-env does not provide, and the plan
+	 * VIP Search is a platform plugin that wp-env does not provide, and this suite
 	 * forbids substituting a mocked assertion that a filter ran. Recorded as a
 	 * skip so the gap stays visible rather than silently dropped.
 	 */

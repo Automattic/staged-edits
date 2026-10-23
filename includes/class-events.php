@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * The plugin implements no notification and no audit log of its own. It reports
  * what happened and names who did it; what to do with that belongs to the site.
- * Every action names the acting user for that reason (R27): a merge is the
+ * Every action names the acting user for that reason: a merge is the
  * highest-consequence thing here, and an event that cannot be attributed is
  * not much use to an audit trail.
  */
@@ -272,7 +272,7 @@ final class Events {
 	 *   next change. The write was assembled against the published words and
 	 *   would have reverted every staged change it did not know about.
 	 * - A write to the *staged copy itself* that would give it any status other
-	 *   than staged or trash (VIPPROD-1246). Left alone, that write would take
+	 *   than staged or trash. Left alone, that write would take
 	 *   the copy out of containment entirely -- publishing it as an ordinary
 	 *   post of its own, at its own slug, while the post it stages sits
 	 *   untouched and both pointers still stand.
@@ -319,7 +319,7 @@ final class Events {
 
 	/**
 	 * Announces that a staged copy was put back after something published it
-	 * out from under the guard (VIPPROD-1246).
+	 * out from under the guard.
 	 *
 	 * The twin of `staged_edits_write_blocked`, for the one path that cannot be
 	 * refused. `wp_publish_post()` writes `post_status` to the row directly and
@@ -365,7 +365,7 @@ final class Events {
 	}
 
 	/**
-	 * Announces that a scheduled publish applied (VIPPROD-1247).
+	 * Announces that a scheduled publish applied.
 	 *
 	 * By the time this fires the merge has already completed: the staged
 	 * copy is gone and the published post holds its content. `staged_edits_merge_completed`
@@ -397,8 +397,7 @@ final class Events {
 	}
 
 	/**
-	 * Announces that a scheduled publish was refused, and the copy kept
-	 * (VIPPROD-1247).
+	 * Announces that a scheduled publish was refused, and the copy kept.
 	 *
 	 * Nothing is retried: the copy is unscheduled at the same time this
 	 * fires, so a site seeing this and doing nothing gets a copy that waits
@@ -476,7 +475,7 @@ final class Events {
 	 * @param int    $staged_copy_id Staged copy post ID.
 	 * @param int    $live_id   Published post ID.
 	 * @param string $confirmed The published state token they confirmed against.
-	 * @param string $kind      What kind of drift was overridden (VIPPROD-752).
+	 * @param string $kind      What kind of drift was overridden.
 	 * @return void
 	 */
 	public static function drift_overridden( int $staged_copy_id, int $live_id, string $confirmed, string $kind ): void {
@@ -494,14 +493,14 @@ final class Events {
 		 * @param int    $live_id   Published post ID being overwritten.
 		 * @param int    $user_id   User who confirmed.
 		 * @param string $confirmed The published state token they were shown.
-		 * @param string $kind      `'content'`, `'other'`, or `'unknown'` (VIPPROD-752).
+		 * @param string $kind      `'content'`, `'other'`, or `'unknown'`.
 		 */
 		do_action( 'staged_edits_drift_overridden', $staged_copy_id, $live_id, get_current_user_id(), $confirmed, $kind );
 	}
 
 	/**
 	 * Announces that a locked meta key was dropped from a staged copy's save
-	 * rather than costing the rest of it (VIPPROD-755).
+	 * rather than costing the rest of it.
 	 *
 	 * The counterpart to the old all-or-nothing refusal: the save succeeded,
 	 * the title, content, and excerpt it carried are on the copy, and this
@@ -529,7 +528,7 @@ final class Events {
 	}
 
 	/**
-	 * Whether a post is a staged copy (R35).
+	 * Whether a post is a staged copy.
 	 *
 	 * The one-line opt-out for anything hooked to core's save and transition
 	 * hooks. A staged copy is a real post row, so `save_post`, `wp_after_insert_post`
@@ -555,7 +554,7 @@ final class Events {
 /**
  * Whether a post is a staged copy.
  *
- * The documented public predicate from R35, as a plain function so a one-line
+ * The documented public predicate, as a plain function so a one-line
  * `function_exists()` guard works without knowing the class layout.
  *
  * @since 0.1.0

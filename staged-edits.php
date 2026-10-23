@@ -38,7 +38,7 @@ require_once __DIR__ . '/includes/class-events.php';
 /**
  * Whether staging is enabled for this request.
  *
- * The kill switch from R32. Filterable so an operator can disable staging during
+ * The kill switch. Filterable so an operator can disable staging during
  * an incident without deactivating the plugin, which would unregister the staged
  * post status and stop containing existing staged copies.
  *

@@ -102,7 +102,7 @@ test.describe( 'Publishing a staged change', () => {
 		// view label, the permalink, and a new tab -- opened by hand
 		// (`toRead()`) rather than through the snackbar's own
 		// `openInNewTab`, which core's snackbar silently ignores below
-		// WordPress 7.0 (VIPPROD-753, F6), so this is asserted by the tab
+		// WordPress 7.0, so this is asserted by the tab
 		// it actually opens rather than by a `target` attribute the
 		// component may or may not have set.
 		const view = snackbar.getByRole( 'link' ).first();
@@ -400,7 +400,7 @@ test.describe( 'Publishing when the post changed without its timestamp moving', 
 		stagedCopyId = stageWithContent( liveId );
 
 		// A direct row write that changes content but never touches
-		// `post_modified_gmt` at all (VIPPROD-752, F1) -- what a database
+		// `post_modified_gmt` at all -- what a database
 		// restore or a migration tool does, and the one case a timestamp
 		// comparison alone could never see.
 		forcePublishedContent(
@@ -458,7 +458,7 @@ test.describe( 'Publishing when the post changed in a way the merge never writes
 		stagedCopyId = stageWithContent( liveId );
 		categoryId = createCategory( 'Autumn collection' );
 
-		// A category, not a staged field (R42): the write guard lets this
+		// A category, not a staged field: the write guard lets this
 		// straight through even with a copy in place, and core bumps the
 		// timestamp on it like any other save. The merge never writes
 		// categories, so this is a change publishing could not have

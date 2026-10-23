@@ -1,6 +1,6 @@
 <?php
 /**
- * Live-post transition tests for U10 (R17, R21, R22, R31).
+ * Live-post transition tests.
  *
  * @package StagedEdits
  */
@@ -79,7 +79,7 @@ class Test_Transitions extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE8. Unpublishing keeps the staged copy and marks it stranded.
+	 * Unpublishing keeps the staged copy and marks it stranded.
 	 *
 	 * @dataProvider unpublished_states
 	 *
@@ -115,7 +115,7 @@ class Test_Transitions extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE8. A stranded staged copy refuses to merge.
+	 * A stranded staged copy refuses to merge.
 	 */
 	public function test_a_stranded_staged_copy_refuses_to_merge(): void {
 		$this->move_live_to( 'draft' );
@@ -128,7 +128,7 @@ class Test_Transitions extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE16. Deleting the live post keeps the staged copy and promotes nothing.
+	 * Deleting the live post keeps the staged copy and promotes nothing.
 	 */
 	public function test_deleting_the_live_post_keeps_the_staged_copy(): void {
 		$published_before = count( get_posts( array( 'post_status' => 'publish', 'fields' => 'ids' ) ) );
@@ -147,7 +147,7 @@ class Test_Transitions extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE16. A staged copy whose live post is gone says what it staged.
+	 * A staged copy whose live post is gone says what it staged.
 	 *
 	 * Nothing can resolve the title afterwards, so a staged copy nobody can
 	 * identify would be nearly as useless as a deleted one.
@@ -226,7 +226,7 @@ class Test_Transitions extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE6. An ungated write leaves the staged copy intact and reports drift.
+	 * An ungated write leaves the staged copy intact and reports drift.
 	 */
 	public function test_an_ungated_write_leaves_the_staged_copy_and_reports_drift(): void {
 		global $wpdb;
@@ -290,7 +290,7 @@ class Test_Transitions extends WP_UnitTestCase {
 	 * Trashing a staged copy discards it rather than leaving it in the trash.
 	 *
 	 * The editor still offers core's "Move to trash" on a staged copy. Left alone it
-	 * produces exactly what R14 rules out: unreviewed content sitting in the
+	 * produces exactly what discarding must never produce: unreviewed content sitting in the
 	 * trash, and a live post pointing at something that is no longer a valid
 	 * staged copy.
 	 */

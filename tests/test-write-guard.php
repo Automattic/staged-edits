@@ -1,6 +1,6 @@
 <?php
 /**
- * Write guard tests for U1 (R41, R42, R43, R47, R50).
+ * Write guard tests.
  *
  * @package StagedEdits
  */
@@ -26,7 +26,7 @@ use WP_UnitTestCase;
  *
  * The plan's first assumption is that `wp_insert_post_empty_content` fires early
  * enough on every supported path that the live row is still untouched when it
- * aborts. Everything else in U1 is worthless if that is false, so it is asserted
+ * aborts. Everything else in this suite is worthless if that is false, so it is asserted
  * against real WordPress here rather than assumed.
  */
 class Test_Write_Guard_Assumption extends WP_UnitTestCase {
@@ -125,7 +125,7 @@ class Test_Write_Guard_Assumption extends WP_UnitTestCase {
 	 * the post ID whatever `wp_update_post()` said -- it keeps the ID it started
 	 * with and only reads the return value to decide whether to retry with
 	 * invalid text stripped -- so the abort is invisible to post.php. That is why
-	 * U3 refuses on the classic surfaces rather than trusting the guard's abort to
+	 * The plugin refuses on the classic surfaces rather than trusting the guard's abort to
 	 * be noticed there.
 	 */
 	public function test_classic_edit_post_aborts_before_the_row_is_written(): void {
@@ -195,7 +195,7 @@ class Test_Write_Guard_Assumption extends WP_UnitTestCase {
 
 /**
  * Proves Tier 1: once a staged copy exists, no write on any transport touches the
- * live post's staged fields, and none touches the copy's either (R41, R55).
+ * live post's staged fields, and none touches the copy's either.
  *
  * The refusal replaced a divert, and these tests are where the difference is
  * pinned. The divert also kept the live post intact, so a suite that only checked
@@ -445,7 +445,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE24, server half. A token REST write is refused, and told why.
+	 * A token REST write is refused, and told why.
 	 *
 	 * The transport an integration actually uses is the one that gets the good
 	 * error, because `Fork::refuse_locked_live_post()` sits outside the cookie
@@ -544,7 +544,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	 * refusing the other would be a partial write nobody asked for, and the
 	 * editor would have to infer which half survived from the row rather than
 	 * from what they were told. `Field_Lock` settled this question the other way
-	 * round for the staged copy (AE12: refuse, never silently strip), and the
+	 * round for the staged copy (refuse, never silently strip), and the
 	 * answer is the same here for the same reason.
 	 */
 	public function test_a_split_write_is_refused_whole(): void {
@@ -651,7 +651,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * KD13. The same call by someone who may publish is refused too.
+	 * The same call by someone who may publish is refused too.
 	 *
 	 * The rule does not read the capability. Publishing over a staged copy would
 	 * leave one post with two pending versions moving apart, and would do it
@@ -674,7 +674,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE27. A write touching no staged field behaves exactly as core.
+	 * A write touching no staged field behaves exactly as core.
 	 */
 	public function test_a_write_changing_only_other_fields_passes_through(): void {
 		$staged_copy = $this->stage();
@@ -701,7 +701,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 
 	/**
 	 * A revision restore on the live post is blocked the same as any other
-	 * write to it, once a copy exists (VIPPROD-752, F4).
+	 * write to it, once a copy exists.
 	 *
 	 * `wp_restore_post_revision()` is `wp_update_post()` underneath, so it
 	 * meets Tier 1 exactly like a direct call would: the filter returns the
@@ -737,7 +737,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE29. The rule holds with no authenticated user at all.
+	 * The rule holds with no authenticated user at all.
 	 */
 	public function test_a_user_less_write_to_a_post_with_a_copy_is_refused(): void {
 		$staged_copy = $this->stage();
@@ -756,10 +756,10 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE29, second half. R43: the same write with no copy publishes as core.
+	 * The same write with no copy publishes as core.
 	 *
 	 * The plugin will not establish a staged copy that no human is waiting on, and
-	 * there is no user here whose capability it could read. U2 owns this branch;
+	 * there is no user here whose capability it could read. Containment owns this branch;
 	 * this asserts what it must not break.
 	 */
 	public function test_a_user_less_write_to_a_post_with_no_copy_publishes(): void {
@@ -979,7 +979,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * R47. A failed staged-copy write aborts the whole update rather than publishing.
+	 * A failed staged-copy write aborts the whole update rather than publishing.
 	 *
 	 * On the first write, which is the only path that still writes to a copy. A
 	 * later write never gets that far, so there is no failure of this shape left
@@ -1150,9 +1150,9 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE25. A programmatic first write publishes, and says so.
+	 * A programmatic first write publishes, and says so.
 	 *
-	 * The seam KD16 leaves open on purpose: a token client running as a user who
+	 * The seam left open on purpose: a token client running as a user who
 	 * cannot publish writes to a post nobody has staged, and the write lands live
 	 * exactly as core would. The event is the whole price of that -- a bypass with
 	 * no record is a hole, not a seam.
@@ -1175,7 +1175,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE25, second half. One filter closes the seam for the whole site.
+	 * One filter closes the seam for the whole site.
 	 */
 	public function test_the_closure_filter_makes_a_programmatic_first_write_stage(): void {
 		wp_set_current_user( $this->editor_id );
@@ -1230,7 +1230,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	}
 
 	/**
-	 * An unrecognized transport stages rather than publishes (KTD30b).
+	 * An unrecognized transport stages rather than publishes.
 	 *
 	 * A plain `wp_update_post()` by someone who cannot publish is the shape a
 	 * front-end editor or a custom admin screen has at this seam. The carve-out
@@ -1257,7 +1257,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 	/**
 	 * A Classic Editor first save stages, and the event names that transport.
 	 *
-	 * U3 owns where the user lands afterwards; the data layer's answer is here.
+	 * The surfaces own where the user lands afterwards; the data layer's answer is here.
 	 */
 	public function test_a_classic_editor_first_write_stages(): void {
 		wp_set_current_user( $this->editor_id );
@@ -1370,7 +1370,7 @@ class Test_Write_Guard extends WP_UnitTestCase {
 }
 
 /**
- * A staged copy may not be given any status but staged or trash (VIPPROD-1246).
+ * A staged copy may not be given any status but staged or trash.
  *
  * Trashing a staged copy and its discard are already covered by
  * `Test_Transitions::test_trashing_a_staged_copy_discards_it()` and are not
@@ -1591,7 +1591,7 @@ class Test_Write_Guard_Staged_Copy_Status extends WP_UnitTestCase {
 	 * the hook the refusal lives on, so the copy is put back instead.
 	 *
 	 * This is the call cron makes for a scheduled post, and the one the
-	 * VIPPROD-1223 investigation used to demonstrate the bug.
+	 * scheduled-publish investigation used to demonstrate the bug.
 	 */
 	public function test_wp_publish_post_on_the_copy_is_put_back(): void {
 		$live_before = $this->row( $this->live_id );

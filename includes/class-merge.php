@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *    is recoverable while a pointer to a deleted post fails every save closed
  *    and makes the published post uneditable.
  *
- * Every step is idempotent (KTD19), which is what lets an interrupted merge be
+ * Every step is idempotent, which is what lets an interrupted merge be
  * re-entered at its recorded phase rather than reasoned about.
  */
 final class Merge {
@@ -65,7 +65,7 @@ final class Merge {
 	 * @param string|null          $override       Drift confirmation, naming the state the editor was shown.
 	 * @param array<string, mixed> $marker_extra   Extra facts merged onto the marker before the merge
 	 *                                              runs, and so onto the `staged_edits_merge_completed` payload
-	 *                                              (VIPPROD-1247) -- `scheduled_for` from a scheduled
+	 *                                              -- `scheduled_for` from a scheduled
 	 *                                              publish, so a listener can tell a scheduled merge from
 	 *                                              a click without a second event.
 	 * @return array<string, mixed>|WP_Error The live post ID and what was merged.
@@ -245,7 +245,7 @@ final class Merge {
 		 * reparenting moves its media, both of which happen earlier. Gating
 		 * only at the write meant a third-party edit mid-merge left the live
 		 * post carrying staged revisions -- its newest revision holding content
-		 * that was never published, which is exactly the state KTD6 exists to
+		 * that was never published, which is exactly the state this ordering exists to
 		 * prevent -- and then refused, so nothing cleaned them up.
 		 */
 		$gate = self::gate( $live_id, $staged_copy_id, $override );
@@ -388,11 +388,11 @@ final class Merge {
 	/**
 	 * Writes the staged fields onto the live post.
 	 *
-	 * The field list is explicit (KTD17). Passing the staged copy's post array would
+	 * The field list is explicit. Passing the staged copy's post array would
 	 * carry its staged status and its non-colliding slug onto the live post,
 	 * unpublishing the article and breaking every inbound link.
 	 *
-	 * Core's revision on this write is deliberately not suppressed (KTD6).
+	 * Core's revision on this write is deliberately not suppressed.
 	 * Suppressing it would leave the pre-merge snapshot as the newest revision
 	 * while the post holds merged content, so anything treating the newest
 	 * revision as current would silently revert the article.
@@ -427,7 +427,7 @@ final class Merge {
 		}
 
 		if ( ! $same ) {
-			// Re-check immediately before writing (KTD15). R21 leaves this
+			// Re-check immediately before writing. The design leaves this
 			// window open by design: an ungated writer can touch the live post
 			// at any moment, including since the gate at the top of the merge.
 			$gate = self::gate( $live_id, $staged_copy_id, $override );
@@ -437,7 +437,7 @@ final class Merge {
 			}
 
 			/*
-			 * The one live write the containment lets through (KTD29). Without
+			 * The one live write the containment lets through. Without
 			 * the sanction the guard would divert this straight back into the
 			 * staged copy the merge is publishing, and the merge would report
 			 * success having changed nothing. Scoped to this post ID and cleared
@@ -457,12 +457,12 @@ final class Merge {
 		}
 
 		/*
-		 * Idempotent by content equality (KTD19): a resumed merge whose write
+		 * Idempotent by content equality: a resumed merge whose write
 		 * already landed skips the write above rather than stacking a second
 		 * revision. But core creates the merged revision on `post_updated`,
 		 * after the row is written, so an interruption in that gap leaves the
 		 * post holding merged content while the newest revision is still the
-		 * pre-merge snapshot -- the exact state KTD6 exists to prevent.
+		 * pre-merge snapshot -- the exact state this ordering exists to prevent.
 		 *
 		 * This closes the gap. Core declines to write a revision when the newest
 		 * one already matches, so on the ordinary path it is a no-op.
@@ -506,7 +506,7 @@ final class Merge {
 	/**
 	 * Takes the single-flight claim.
 	 *
-	 * An atomic cache add rather than a read-then-write on meta (KTD22), whose
+	 * An atomic cache add rather than a read-then-write on meta, whose
 	 * race window is wide enough to lose the two-simultaneous-merges case.
 	 *
 	 * The honest limit: a cache flush releases the claim early. That is why

@@ -37,8 +37,8 @@ import { addQueryArgs } from '@wordpress/url';
  * link, which the save response replaces, so it is right again the moment a save
  * settles.
  *
- * A copy holding only its baseline arrives with no URL to refresh at all
- * (VIPPROD-753): one revision is nothing to review yet. Whether that has
+ * A copy holding only its baseline arrives with no URL to refresh at all:
+ * one revision is nothing to review yet. Whether that has
  * changed is answered against the baseline's own id, sent for exactly this
  * -- `getCurrentPostLastRevisionId()` cannot say it on its own, since it
  * names whichever revision is newest, baseline included, so it already
@@ -99,7 +99,7 @@ export function useReviewUrl( ctx ) {
  * Shared by every notice and snackbar action that reads rather than works,
  * so a new tab opens the same way everywhere this editor offers one: by
  * hand, on click, rather than through a component option a given
- * WordPress version may or may not honour (VIPPROD-753, F6 -- the
+ * WordPress version may or may not honour (the
  * snackbar's own `openInNewTab` is silently ignored below WordPress 7.0).
  *
  * @param {string} label The link text.
@@ -160,7 +160,7 @@ function toReadInNotice( label, url ) {
 /**
  * Core's revisions view, opened on what is staged.
  *
- * R23 forbids a diff tool of our own, so this is the review surface everywhere
+ * The plugin has no diff tool of its own, so this is the review surface everywhere
  * it is offered.
  *
  * @param {Object} ctx   The staging context.
@@ -183,8 +183,8 @@ export function reviewStaged( ctx, url ) {
  * the in-editor view cannot.
  *
  * That view diffs blocks; a title or excerpt is neither, so a change to
- * either reads there as nothing changed at all (VIPPROD-753, F2). This is
- * the way around that -- still core's own screen (R23), not offered
+ * either reads there as nothing changed at all. This is
+ * the way around that -- still core's own screen, not offered
  * everywhere a review link is, because a second review link on a copy
  * whose only change is content would be a second name for the same
  * destination `reviewStaged()` already offers.

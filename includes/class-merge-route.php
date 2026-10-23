@@ -85,10 +85,10 @@ final class Merge_Route {
 	/**
 	 * Whether the current user may act on the staged copy a request names.
 	 *
-	 * Authorization resolves against the live post, not the staged copy (KTD13), so
+	 * Authorization resolves against the live post, not the staged copy, so
 	 * someone who can no longer edit the published post cannot publish into it.
 	 *
-	 * Shared with `Schedule_Route` (VIPPROD-1247): scheduling a publish and
+	 * Shared with `Schedule_Route`: scheduling a publish and
 	 * applying one are the same authority, so the two routes read the same
 	 * answer rather than each carrying its own copy of these three checks.
 	 *

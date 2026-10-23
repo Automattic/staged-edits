@@ -1,6 +1,6 @@
 <?php
 /**
- * Fork tests for U4 (R1, R2, R4, R5, R6, R19, R21).
+ * Fork tests.
  *
  * @package StagedEdits
  */
@@ -105,7 +105,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE17. A user who may publish writes to the published post.
+	 * A user who may publish writes to the published post.
 	 */
 	public function test_publisher_save_publishes_and_stages_nothing(): void {
 		wp_set_current_user( $this->publisher_id );
@@ -118,7 +118,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE20. An existing staged copy claims a publisher's save.
+	 * An existing staged copy claims a publisher's save.
 	 *
 	 * One post never carries two pending versions moving apart, whoever saves.
 	 */
@@ -139,7 +139,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE18. A user who cannot publish still stages on save.
+	 * A user who cannot publish still stages on save.
 	 */
 	public function test_user_without_direct_publish_still_stages(): void {
 		$before = get_post_field( 'post_content', $this->live_id );
@@ -152,7 +152,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE21. The filter restores staging for everyone.
+	 * The filter restores staging for everyone.
 	 */
 	public function test_filter_forcing_staging_stages_a_publisher_save(): void {
 		wp_set_current_user( $this->publisher_id );
@@ -282,7 +282,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE1. Opening without saving creates nothing.
+	 * Opening without saving creates nothing.
 	 */
 	public function test_no_save_creates_no_staged_copy(): void {
 		$this->assertNull( Staged_Copy_Repository::find_for_live( $this->live_id ) );
@@ -342,7 +342,7 @@ class Test_Fork extends WP_UnitTestCase {
 	/**
 	 * A second save from the published post is refused, and creates no second copy.
 	 *
-	 * It used to be folded into the first copy, which is the bug R55 closes: the
+	 * It used to be folded into the first copy, which is the bug the refusal closes: the
 	 * second request was composed against the published words, so it replaced the
 	 * first staged edit rather than adding to it. The copy keeps what it holds and
 	 * the caller is told to go there.
@@ -360,7 +360,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE14. A request without the REST nonce publishes as core would.
+	 * A request without the REST nonce publishes as core would.
 	 */
 	public function test_request_without_rest_nonce_is_not_staged(): void {
 		$response = $this->update_post(
@@ -375,7 +375,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE12's fork half. A request-supplied slug does not reach the staged copy.
+	 * A request-supplied slug does not reach the staged copy.
 	 */
 	public function test_forking_save_cannot_set_the_staged_copy_slug(): void {
 		$this->update_post(
@@ -424,7 +424,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The R32 kill switch turns staging off without deactivating the plugin.
+	 * The kill switch turns staging off without deactivating the plugin.
 	 */
 	public function test_kill_switch_disables_forking(): void {
 		add_filter( 'staged_edits_is_enabled', '__return_false' );
@@ -438,7 +438,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE15. A pre-fork autosave does not survive to offer staged text back.
+	 * A pre-fork autosave does not survive to offer staged text back.
 	 */
 	public function test_pre_fork_autosave_is_removed(): void {
 		wp_create_post_autosave(
@@ -463,7 +463,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers AE9. When staging cannot be established the live post is untouched.
+	 * When staging cannot be established the live post is untouched.
 	 */
 	public function test_fork_failure_leaves_the_live_post_byte_identical(): void {
 		$before = get_post( $this->live_id );
@@ -486,7 +486,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A public custom post type registered late in init still forks (KTD23).
+	 * A public custom post type registered late in init still forks.
 	 */
 	public function test_late_registered_public_post_type_forks(): void {
 		register_post_type(
@@ -548,7 +548,7 @@ class Test_Fork extends WP_UnitTestCase {
 
 	/**
 	 * The backstop fires when the fork handles a save the staging route could
-	 * have taken (R49, KTD38).
+	 * have taken.
 	 *
 	 * The editor asks `Stage_Route` for a staging save. Arriving here instead
 	 * means its protocol did not run, which is worth an alarm rather than a
@@ -572,7 +572,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A save onto an existing staged copy is a refusal, not a backstop (KTD38).
+	 * A save onto an existing staged copy is a refusal, not a backstop.
 	 *
 	 * The alarm means one thing now -- the editor's protocol did not run and a
 	 * first save fell through to the fork -- and it has to stay silent on a path
@@ -595,7 +595,7 @@ class Test_Fork extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Covers R42. A save changing nothing stageable publishes as core does.
+	 * A save changing nothing stageable publishes as core does.
 	 *
 	 * The editor sends a term change to the same endpoint an edit goes to.
 	 * Forking it would create a copy holding no change, move the editor onto it,

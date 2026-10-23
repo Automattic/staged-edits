@@ -1,6 +1,6 @@
 <?php
 /**
- * Incident CLI tests for U14 (R34).
+ * Incident CLI tests.
  *
  * @package StagedEdits
  */
@@ -92,7 +92,7 @@ class Test_CLI extends WP_UnitTestCase {
 		$this->assertSame( 'Meridian Active, Summer collection', $row['live_title'] );
 		$this->assertSame( 'healthy', $row['state'] );
 		$this->assertSame( '', $row['phase'] );
-		$this->assertSame( '', $row['scheduled_for'], 'An unscheduled copy should report no scheduled time (VIPPROD-1247).' );
+		$this->assertSame( '', $row['scheduled_for'], 'An unscheduled copy should report no scheduled time.' );
 	}
 
 	/**

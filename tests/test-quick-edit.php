@@ -1,6 +1,6 @@
 <?php
 /**
- * Quick Edit refusal and Classic Editor arrival tests for U3 (R44, R50).
+ * Quick Edit refusal and Classic Editor arrival tests.
  *
  * @package StagedEdits
  */
@@ -21,7 +21,7 @@ use WP_UnitTestCase;
 /**
  * What a refusal looks like from a test's point of view.
  *
- * `wp_die()` is the mechanism KTD33 chose because core's `inline-edit-post.js`
+ * `wp_die()` is the mechanism chosen because core's `inline-edit-post.js`
  * renders a non-row response as its own inline error notice. A test cannot let
  * the process die, so it swaps in a handler that throws this instead and reads
  * the message off it.
@@ -31,7 +31,7 @@ class Quick_Edit_Died extends Exception {}
 /**
  * Quick Edit refuses rather than staging, and refuses only when it must.
  *
- * KD15: Quick Edit's surface cannot represent staging. The row it re-renders is
+ * Quick Edit's surface cannot represent staging. The row it re-renders is
  * built from the published post, so a staged save would redisplay the old title
  * with no path to the copy and the edit would appear to have vanished. The
  * refusal is therefore the product behaviour, not a limitation being papered
@@ -259,7 +259,7 @@ class Test_Quick_Edit extends WP_UnitTestCase {
 	}
 
 	/**
-	 * AE23: a staging user's Quick Edit is refused, and nothing is written.
+	 * A staging user's Quick Edit is refused, and nothing is written.
 	 */
 	public function test_a_staging_users_quick_edit_is_refused(): void {
 		wp_set_current_user( $this->editor_id );
@@ -333,9 +333,9 @@ class Test_Quick_Edit extends WP_UnitTestCase {
 	/**
 	 * A publisher's Quick Edit on a post that already has a staged copy is refused.
 	 *
-	 * The capability is not the question, and neither is the surface: R55 refuses
+	 * The capability is not the question, and neither is the surface: the plugin refuses
 	 * this write on every transport. Quick Edit refuses it a hook earlier so the
-	 * row can say something, which is what KD15 asks for.
+	 * row can say something, which is what that surface needs.
 	 *
 	 * The event is `staged_edits_write_blocked`, not `staged_edits_stage_refused`. The two mean
 	 * different things and a site counting them needs them apart: one is a write
@@ -401,7 +401,7 @@ class Test_Quick_Edit extends WP_UnitTestCase {
 	}
 
 	/**
-	 * A Quick Edit that changes no staged field passes through (R42).
+	 * A Quick Edit that changes no staged field passes through.
 	 *
 	 * Categories, comment status, and the slug are core's business. A refusal here
 	 * would break Quick Edit for everything it is mostly used for.
@@ -426,7 +426,7 @@ class Test_Quick_Edit extends WP_UnitTestCase {
 	/**
 	 * Without the priority-0 handler the guard refuses instead of publishing.
 	 *
-	 * The fail-closed backstop from KTD33. If another plugin dies on this hook
+	 * The fail-closed backstop. If another plugin dies on this hook
 	 * first, or the registration order slips, the write reaches `wp_insert_post()`
 	 * on the `quickedit` channel -- where it must refuse rather than fall through
 	 * to the programmatic carve-out.
@@ -459,7 +459,7 @@ class Test_Quick_Edit extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Bulk edit needs no handler, because it carries no staged field (R42).
+	 * Bulk edit needs no handler, because it carries no staged field.
 	 */
 	public function test_bulk_edit_is_untouched(): void {
 		require_once ABSPATH . 'wp-admin/includes/post.php';
@@ -620,7 +620,7 @@ class Test_Classic_Arrival extends WP_UnitTestCase {
 	}
 
 	/**
-	 * The arrival notice on the classic edit screen carries the routes U6 never gives it.
+	 * The arrival notice on the classic edit screen carries the routes the drift notice never gives it.
 	 */
 	public function test_the_arrival_notice_renders_with_its_routes(): void {
 		$this->classic_save();

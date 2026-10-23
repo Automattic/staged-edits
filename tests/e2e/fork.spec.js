@@ -196,7 +196,7 @@ test.describe( 'Forking a published post', () => {
 
 		await expect( review ).toBeVisible();
 
-		// Whichever surface reviews a staged change (VIPPROD-753); which
+		// Whichever surface reviews a staged change; which
 		// revision it names is pinned to the newest staged save by
 		// review.spec.js.
 		expect( await review.getAttribute( 'href' ) ).toMatch(
@@ -309,7 +309,7 @@ test.describe( 'Forking a published post', () => {
 		await chooseCategory( page, CATEGORY );
 
 		// A category is not one of the fields a staged copy can hold, so the
-		// label already says what this save actually does (VIPPROD-1171):
+		// label already says what this save actually does:
 		// "Save", not "Stage changes".
 		await expect( publishButton( page ) ).toHaveText( 'Save' );
 
@@ -411,8 +411,7 @@ test.describe( 'Forking a published post', () => {
 		).toHaveClass( /is-editing-disabled/ );
 
 		// The notice also names what cannot be staged: the slug is one of the
-		// fields that saves from this screen straight to the published post
-		// (VIPPROD-1230).
+		// fields that saves from this screen straight to the published post.
 		await expect(
 			locked.locator( '.components-notice__content' )
 		).toContainText( 'slug' );
@@ -521,11 +520,11 @@ test.describe( 'When the editor protocol does not run', () => {
 		expect( heard[ 0 ].staged_copy_id ).toBe( stagedCopyId );
 	} );
 
-	test( 'covers AE26: with the bundle gone, the click still stages', async ( {
+	test( 'with the bundle gone, the click still stages', async ( {
 		page,
 	} ) => {
 		// Not a hook of ours: the bundle is simply never delivered, which is the
-		// failure AE26 describes. Everything below is what the server does on
+		// failure this test describes. Everything below is what the server does on
 		// its own.
 		await page.route(
 			'**/wp-content/plugins/*/build/index.js*',
